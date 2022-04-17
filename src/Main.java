@@ -3,10 +3,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+
 public class Main extends Application{
     public void start(Stage primaryStage){
-        BorderPane pane = new BorderPane();
-        Scene scene = new Scene(pane);
+       UI ui = new UI();
+        Scene scene = new Scene(ui,800,600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
