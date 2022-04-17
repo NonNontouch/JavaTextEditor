@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
     public void start(Stage primaryStage){
-       UI ui = new UI();
+        UI ui = new UI();
         Scene scene = new Scene(ui,800,600);
         primaryStage.setScene(scene);
         primaryStage.show();
