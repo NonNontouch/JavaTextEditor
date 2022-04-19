@@ -2,20 +2,20 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class FileIO {
 
-  private TextField TFPane;
+  private TextArea TFPane;
 
   private File Fileopen;
 
   private FileChooser Chooser;
   private Stage FileIOStage;
 
-  public FileIO(Stage primaryStage, TextField tf) {
+  public FileIO(Stage primaryStage, TextArea tf) {
     Chooser = new FileChooser();
     FileIOStage = primaryStage;
     TFPane = tf;
