@@ -7,12 +7,6 @@ public class Controller {
 
   public static void onOpen() {
     FileIO fileio = new FileIO(null, null);
-
-    try {
-        fileio.OpenFile();
-    } catch (IOException e1) {
-        e1.printStackTrace();
-    }
   }
 
   public static void onSave() {

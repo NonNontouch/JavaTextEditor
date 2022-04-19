@@ -1,6 +1,4 @@
 
 .vscode/launch.json
 .vscode/setting.json
-bin/Main.class
-bin/FileIO.class
-bin/UI.class
+bin/
