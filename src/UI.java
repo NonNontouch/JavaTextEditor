@@ -1,4 +1,5 @@
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
@@ -131,7 +132,11 @@ public class UI extends BorderPane {
   }
 
   public static void onAbout() {
-    System.out.println("About");
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setHeaderText(null);
+    alert.setTitle("About");
+    alert.setContentText("This is a Notepad--");
+    alert.show();
   }
 
   public static void onHelp() {
