@@ -16,21 +16,14 @@ public class Main extends Application {
         BorderPane borderPane = new BorderPane();
         TextField panetf = new TextField();
         panetf.setPrefHeight(500);
-        FileIO fileio = new FileIO(primaryStage,panetf);
-        
+        FileIO fileio = new FileIO(primaryStage, panetf);
 
         UI ui = new UI();
         ui.setTop(btOpen);
         ui.setCenter(panetf);
-        
+
         btOpen.setAlignment(Pos.TOP_LEFT);
-        btOpen.setOnAction(e -> {
-            try {
-                fileio.OpenFile();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        });
+        btOpen.setOnAction(e -> fileio.OpenFile());
 
         Scene scene = new Scene(ui, 800, 600);
         primaryStage.setScene(scene);
