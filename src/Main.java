@@ -4,7 +4,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
   @Override
   public void start(Stage primaryStage) {
-    UI ui = new UI(primaryStage);
+    new UI(primaryStage);
   }
 
   public static void main(String[] args) {
