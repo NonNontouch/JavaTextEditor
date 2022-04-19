@@ -6,55 +6,122 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class UI extends BorderPane {
-    
-    public UI() {
-      MenuBar menuBar = new MenuBar();
+    private static TextArea textArea;
+    private static Stage stage;
+    private static MenuBar menuBar;
 
-      MenuItem iNew = new MenuItem("New");
-      iNew.setOnAction(e -> Controller.onNew());
+    public UI(Stage stage) {
+        UI.stage = stage;
 
-      MenuItem iOpen = new MenuItem("Open");
-      iOpen.setOnAction(e -> Controller.onOpen());
+        initMenuBar();
+        setTop(menuBar);
 
-      MenuItem iSave = new MenuItem("Save");
-      iSave.setOnAction(e -> Controller.onSave());
-
-      MenuItem iSaveAs = new MenuItem("Save As");
-      iSaveAs.setOnAction(e -> Controller.onSaveAs());
-
-      MenuItem iExit = new MenuItem("Exit");
-      iExit.setOnAction(e -> Controller.onExit());
-
-      final Menu fileMenu = new Menu("File", null, iNew, iOpen, iSave, iSaveAs, iExit);
-
-      MenuItem iUndo = new MenuItem("Undo");
-      iUndo.setOnAction(e -> Controller.onUndo());
-
-      MenuItem iRedo = new MenuItem("Redo");
-      iRedo.setOnAction(e -> Controller.onRedo());
-
-      MenuItem iCut = new MenuItem("Cut");
-      iCut.setOnAction(e -> Controller.onCut());
-
-      MenuItem iCopy = new MenuItem("Copy");
-      iCopy.setOnAction(e -> Controller.onCopy());
-
-      MenuItem iPaste = new MenuItem("Paste");
-      iPaste.setOnAction(e -> Controller.onPaste());
-
-      final Menu editMenu = new Menu("Edit", null, iUndo, iRedo, iCut, iCopy, iPaste);
-
-      final Menu viewMenu = new Menu("View", null);
-      final Menu helpMenu = new Menu("Help", null);
-
-      
-      menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
-      setTop(menuBar);
-
-      TextArea textArea = new TextArea();
-      setCenter(textArea);
+        textArea = new TextArea();
+        setCenter(textArea);
 
     }
 
-    
+    private void initMenuBar() {
+        menuBar = new MenuBar();
+
+        MenuItem iNew = new MenuItem("New");
+        iNew.setOnAction(e -> onNew());
+
+        MenuItem iOpen = new MenuItem("Open");
+        iOpen.setOnAction(e -> onOpen());
+
+        MenuItem iSave = new MenuItem("Save");
+        iSave.setOnAction(e -> onSave());
+
+        MenuItem iSaveAs = new MenuItem("Save As");
+        iSaveAs.setOnAction(e -> onSaveAs());
+
+        MenuItem iExit = new MenuItem("Exit");
+        iExit.setOnAction(e -> onExit());
+
+        final Menu fileMenu = new Menu("File", null, iNew, iOpen, iSave, iSaveAs, iExit);
+
+        MenuItem iUndo = new MenuItem("Undo");
+        iUndo.setOnAction(e -> onUndo());
+
+        MenuItem iRedo = new MenuItem("Redo");
+        iRedo.setOnAction(e -> onRedo());
+
+        MenuItem iCut = new MenuItem("Cut");
+        iCut.setOnAction(e -> onCut());
+
+        MenuItem iCopy = new MenuItem("Copy");
+        iCopy.setOnAction(e -> onCopy());
+
+        MenuItem iPaste = new MenuItem("Paste");
+        iPaste.setOnAction(e -> onPaste());
+
+        final Menu editMenu = new Menu("Edit", null, iUndo, iRedo, iCut, iCopy, iPaste);
+
+        final Menu viewMenu = new Menu("View", null);
+        final Menu helpMenu = new Menu("Help", null);
+
+        menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
+    }
+
+    public static void onNew() {
+        System.out.println("New");
+    }
+
+    public static void onOpen() {
+        FileIO fileIO = new FileIO(stage, textArea);
+        fileIO.OpenFile();
+    }
+
+    public static void onSave() {
+        System.out.println("Save");
+    }
+
+    public static void onSaveAs() {
+        System.out.println("Save As");
+    }
+
+    public static void onExit() {
+        System.exit(0);
+    }
+
+    public static void onUndo() {
+        System.out.println("Undo");
+    }
+
+    public static void onRedo() {
+        System.out.println("Redo");
+    }
+
+    public static void onCut() {
+        System.out.println("Cut");
+    }
+
+    public static void onCopy() {
+        System.out.println("Copy");
+    }
+
+    public static void onPaste() {
+        System.out.println("Paste");
+    }
+
+    public static void onZoomIn() {
+        System.out.println("Zoom In");
+    }
+
+    public static void onZoomOut() {
+        System.out.println("Zoom Out");
+    }
+
+    public static void onZoomReset() {
+        System.out.println("Zoom Reset");
+    }
+
+    public static void onAbout() {
+        System.out.println("About");
+    }
+
+    public static void onHelp() {
+        System.out.println("Help");
+    }
 }
