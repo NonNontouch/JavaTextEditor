@@ -27,29 +27,34 @@ public class FileIO {
     String temp = "";
     Fileopen = Chooser.showOpenDialog(FileIOStage);
     // ไฟล์สามารถเปิดอ่านและเขียนได้
-    if (Fileopen.canRead() && Fileopen.canWrite()) {
-      try (
-          FileReader Reader = new FileReader(Fileopen);
-          BufferedReader bf = new BufferedReader(Reader);) {
+    if (Fileopen!=null) {
+      if (Fileopen.canRead() && Fileopen.canWrite()) {
+        try (
 
-        while (temp != null) {
-          texttoshow.append(temp);
-          texttoshow.append(System.lineSeparator());
-          temp = bf.readLine();
+            FileReader Reader = new FileReader(Fileopen);
+            BufferedReader bf = new BufferedReader(Reader);) {
+
+          while (temp != null) {
+
+            texttoshow.append(temp);
+            texttoshow.append(System.lineSeparator());
+            temp = bf.readLine();
+            
+          }
+
+          TFPane.setText(texttoshow.toString());
+
+          bf.close();
+          Reader.close();
+
+        } catch (Exception e) {
+          e.printStackTrace();
         }
 
-        TFPane.setText(texttoshow.toString());
+      } else if (Fileopen.canRead() && !Fileopen.canWrite()) {
+        // ไฟล์เปิดอ่านได้แต่เขียนไม่ได้
 
-        bf.close();
-        Reader.close();
-
-      } catch (Exception e) {
-        e.printStackTrace();
-      } 
-
-    } else if (Fileopen.canRead() && !Fileopen.canWrite()) {
-      // ไฟล์เปิดอ่านได้แต่เขียนไม่ได้
-
+      }
     }
 
   }
