@@ -1,11 +1,6 @@
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Scanner;
 
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -13,13 +8,9 @@ import javafx.stage.Stage;
 
 public class FileIO {
 
-  private DataInputStream InputStream;
-  private DataOutputStream OutputStream;
-
   private TextField TFPane;
 
   private File Fileopen;
-  private Scanner ReadFile;
 
   private FileChooser Chooser;
   private Stage FileIOStage;
@@ -30,35 +21,37 @@ public class FileIO {
     TFPane = tf;
   }
 
-  public TextField OpenFile() throws IOException {
-    
+  public void OpenFile() {
+
     StringBuilder texttoshow = new StringBuilder();
-    String temp = new String();
-
+    String temp = "";
     Fileopen = Chooser.showOpenDialog(FileIOStage);
-    FileReader Reader = new FileReader(Fileopen);
-    BufferedReader bf = new BufferedReader(Reader);
-
+    // ไฟล์สามารถเปิดอ่านและเขียนได้
     if (Fileopen.canRead() && Fileopen.canWrite()) {
-      try {
+      try (
+          FileReader Reader = new FileReader(Fileopen);
+          BufferedReader bf = new BufferedReader(Reader);) {
+
         while (temp != null) {
           texttoshow.append(temp);
           texttoshow.append(System.lineSeparator());
           temp = bf.readLine();
         }
+
         TFPane.setText(texttoshow.toString());
-      } finally {
+
         bf.close();
-      }
-      // ไฟล์สามารถเปิดอ่านและเขียนได้
-      return TFPane;
+        Reader.close();
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      } 
 
     } else if (Fileopen.canRead() && !Fileopen.canWrite()) {
       // ไฟล์เปิดอ่านได้แต่เขียนไม่ได้
-      return TFPane;
+
     }
 
-    return TFPane;
   }
 
   public void SaveFile() {
