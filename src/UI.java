@@ -73,6 +73,7 @@ public class UI extends BorderPane {
   private void display() {
     Scene scene = new Scene(this, 800, 600);
     UI.stage.setScene(scene);
+    UI.stage.setTitle("Notepad--");
     UI.stage.show();
   }
 
