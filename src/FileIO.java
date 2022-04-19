@@ -31,19 +31,25 @@ public class FileIO {
   }
 
   public TextField OpenFile() throws IOException {
-    StringBuilder sb = new StringBuilder();
+    
+    StringBuilder texttoshow = new StringBuilder();
     String temp = new String();
+
     Fileopen = Chooser.showOpenDialog(FileIOStage);
     FileReader Reader = new FileReader(Fileopen);
     BufferedReader bf = new BufferedReader(Reader);
 
     if (Fileopen.canRead() && Fileopen.canWrite()) {
-      while (temp != null) {
-        temp = bf.readLine();
-        sb.append(temp);
-        sb.append(System.lineSeparator());
+      try {
+        while (temp != null) {
+          texttoshow.append(temp);
+          texttoshow.append(System.lineSeparator());
+          temp = bf.readLine();
+        }
+        TFPane.setText(texttoshow.toString());
+      } finally {
+        bf.close();
       }
-      TFPane.setText(sb.toString());
       // ไฟล์สามารถเปิดอ่านและเขียนได้
       return TFPane;
 
