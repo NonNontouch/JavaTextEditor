@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
@@ -90,7 +91,18 @@ public class FileIO {
   }
 
   public void SaveFile() {
+       //อันนี้ลองเขียนดูแต่เหมือนมันจะใช้ไม่ได้
+       try {
+        FileWriter fileWriter;
+         
+        fileWriter = new FileWriter(UserInputFile);
+        fileWriter.write(TextAreaUI.getText());
+        fileWriter.close();
+    } catch (Exception e) {
+      e.printStackTrace();
 
+    }
+    
   }
 
 }
