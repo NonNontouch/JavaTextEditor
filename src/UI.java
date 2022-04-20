@@ -1,3 +1,5 @@
+import java.io.File;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
@@ -6,6 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 
 public class UI extends BorderPane {
   private static TextArea textArea;
@@ -92,7 +95,28 @@ public class UI extends BorderPane {
   }
 
   public static void onSaveAs() {
-    System.out.println("Save As");
+    FileIO fileIO = new FileIO(stage, textArea);
+    fileIO.SaveFile();
+    /*FileChooser fileChooser = new FileChooser();
+    
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+    FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("All Files", "*.*");
+    fileChooser.getExtensionFilters().add(extFilter);
+    fileChooser.getExtensionFilters().add(extFilter2);
+
+    File file = fileChooser.showSaveDialog(UI.stage);
+    if(file != null) if(file.exists()) {
+      textArea.getText();
+  } else {
+      try { 
+        file.createNewFile(); 
+      }
+      catch(Exception e) { 
+        return; 
+      }
+      textArea.getText();
+  }*/
+
   }
 
   public static void onExit() {
