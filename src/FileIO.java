@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,12 +30,26 @@ public class FileIO {
 
     StringBuilder texttoshow = new StringBuilder();
 
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Document (*.txt)", "*.txt");
+    FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("All Files", "*.*");
+    Chooser.getExtensionFilters().add(extFilter);
+    Chooser.getExtensionFilters().add(extFilter2);
+
     UserInputFile = Chooser.showOpenDialog(FileIOStage);
 
-    // ไฟล์สามารถเปิดอ่านและเขียนได้
     if (UserInputFile != null) {
-      boolean ispdffile = UserInputFile.getName().endsWith(".pdf");
-      if (UserInputFile.canRead() && UserInputFile.canWrite() && !ispdffile) {
+
+      boolean isuserinputnontextfile;
+      try {
+        isuserinputnontextfile = IsBinaryFile(UserInputFile);
+      } catch (IOException e1) {
+        //เปิดไฟล์ไม่ได้ ให้จบการเปิดไฟล์เลย
+        e1.printStackTrace();
+        return;
+      }
+
+      if (UserInputFile.canRead() && UserInputFile.canWrite() && !isuserinputnontextfile) {
+        // ไฟล์สามารถเปิดอ่านและเขียนได้
         try (
 
             FileReader Reader = new FileReader(UserInputFile);
@@ -60,7 +72,7 @@ public class FileIO {
           e.printStackTrace();
         }
 
-      } else if (UserInputFile.canRead() && !UserInputFile.canWrite()) {
+      } else if (UserInputFile.canRead() && !UserInputFile.canWrite() && !isuserinputnontextfile) {
         // ไฟล์เปิดอ่านได้แต่เขียนไม่ได้
 
         try (
@@ -72,7 +84,7 @@ public class FileIO {
 
           Alert alert = new Alert(AlertType.INFORMATION);
           while (temp != null) {
-
+            //loop อ่านซ้ำจนกว่าจะเป็น null(ถึงตัวสุดท้าย)
             texttoshow.append(temp);
             texttoshow.append(System.lineSeparator());
             temp = bf.readLine();
@@ -83,31 +95,20 @@ public class FileIO {
           TextAreaUI.setEditable(false);
 
           alert.setHeaderText(null);
-          alert.setContentText("This file is read only");
+          alert.setTitle("Information");
+          alert.setContentText("This file is read only.");
           alert.show();
 
         } catch (Exception e) {
           e.printStackTrace();
         }
-      }
-    } else if (IsBinaryFile(UserInputFile)) {
-      String temp;
-      try (DataInputStream userbinaryinput = new DataInputStream(new FileInputStream(UserInputFile));) {
-
-        temp = userbinaryinput.readUTF();
-
-        while (temp != null) {
-
-          texttoshow.append(temp);
-          texttoshow.append(System.lineSeparator());
-          userbinaryinput.readUTF();
-        }
-
-        TextAreaUI.setText(texttoshow.toString());
-        TextAreaUI.setEditable(true);
-
-      } catch (IOException e) {
-        e.printStackTrace();
+      } else if (isuserinputnontextfile) {
+        // เปิดไฟล์ Binary ขึ้นมาแจ้งผู้ใช้ว่ามันเปิดไม่ได้
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setTitle("Error");
+        alert.setContentText("This program can't open Binary file.");
+        alert.show();
       }
     }
   }
@@ -127,20 +128,16 @@ public class FileIO {
 
   }
 
-  public boolean IsBinaryFile(File F) {
-    try {
-      String type = Files.probeContentType(F.toPath());
-      if (type == null) {
-        // type couldn't be determined, assume binary
-        return true;
-      } else if (type.startsWith("text")) {
-        return false;
-      } else {
-        // type isn't text
-        return true;
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
+  public boolean IsBinaryFile(File F) throws IOException {
+
+    String type = Files.probeContentType(F.toPath());
+    if (type == null) {
+      // เป็นอะไรก็ไม่รู้ถือว่าเป็น Birnary เลย
+      return true;
+    } else if (type.startsWith("text")) {
+      return false;
+    } else {
+      // ไม่ใช่ไฟล์ text
       return true;
     }
 
