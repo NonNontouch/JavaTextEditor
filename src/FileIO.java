@@ -22,6 +22,11 @@ public class FileIO {
 
   public FileIO(Stage primaryStage, TextArea tf) {
     Chooser = new FileChooser();
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Document (*.txt)", "*.txt");
+    FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("All Files", "*.*");
+    Chooser.getExtensionFilters().add(extFilter);
+    Chooser.getExtensionFilters().add(extFilter2);
+    
     FileIOStage = primaryStage;
     TextAreaUI = tf;
   }
@@ -29,11 +34,6 @@ public class FileIO {
   public void OpenFile() {
 
     StringBuilder texttoshow = new StringBuilder();
-
-    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Document (*.txt)", "*.txt");
-    FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("All Files", "*.*");
-    Chooser.getExtensionFilters().add(extFilter);
-    Chooser.getExtensionFilters().add(extFilter2);
 
     UserInputFile = Chooser.showOpenDialog(FileIOStage);
 
@@ -43,7 +43,7 @@ public class FileIO {
       try {
         isuserinputnontextfile = IsBinaryFile(UserInputFile);
       } catch (IOException e1) {
-        //เปิดไฟล์ไม่ได้ ให้จบการเปิดไฟล์เลย
+        // เปิดไฟล์ไม่ได้ ให้จบการเปิดไฟล์เลย
         e1.printStackTrace();
         return;
       }
@@ -84,7 +84,7 @@ public class FileIO {
 
           Alert alert = new Alert(AlertType.INFORMATION);
           while (temp != null) {
-            //loop อ่านซ้ำจนกว่าจะเป็น null(ถึงตัวสุดท้าย)
+            // loop อ่านซ้ำจนกว่าจะเป็น null(ถึงตัวสุดท้าย)
             texttoshow.append(temp);
             texttoshow.append(System.lineSeparator());
             temp = bf.readLine();
@@ -110,6 +110,10 @@ public class FileIO {
         alert.setContentText("This program can't open Binary file.");
         alert.show();
       }
+      // เมื่อ user กด open อีกรอบจะเป็น directory ที่อยู่ล่าสุด
+      
+        Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
+      
     }
   }
 
