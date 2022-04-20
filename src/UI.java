@@ -124,23 +124,23 @@ public class UI extends BorderPane {
   }
 
   public static void onUndo() {
-    System.out.println("Undo");
+    textArea.undo();
   }
 
   public static void onRedo() {
-    System.out.println("Redo");
+    textArea.redo();
   }
 
   public static void onCut() {
-    System.out.println("Cut");
+    textArea.cut();
   }
 
   public static void onCopy() {
-    System.out.println("Copy");
+    textArea.copy();
   }
 
   public static void onPaste() {
-    System.out.println("Paste");
+    textArea.paste();
   }
 
   public static void onZoomIn() {
