@@ -26,16 +26,20 @@ public class FileIO {
   public void OpenFile() {
 
     StringBuilder texttoshow = new StringBuilder();
-    String temp = "";
+
     UserInputFile = Chooser.showOpenDialog(FileIOStage);
+
     // ไฟล์สามารถเปิดอ่านและเขียนได้
     if (UserInputFile != null) {
-      if (UserInputFile.canRead() && UserInputFile.canWrite()) {
+      boolean ispdffile = UserInputFile.getName().endsWith(".pdf");
+      if (UserInputFile.canRead() && UserInputFile.canWrite() && !ispdffile) {
         try (
 
             FileReader Reader = new FileReader(UserInputFile);
             BufferedReader bf = new BufferedReader(Reader);) {
 
+          String temp = bf.readLine();
+          
           while (temp != null) {
 
             texttoshow.append(temp);
@@ -45,6 +49,7 @@ public class FileIO {
           }
 
           TextAreaUI.setText(texttoshow.toString());
+          TextAreaUI.setEditable(true);
 
         } catch (Exception e) {
           e.printStackTrace();
@@ -57,6 +62,8 @@ public class FileIO {
 
             FileReader Reader = new FileReader(UserInputFile);
             BufferedReader bf = new BufferedReader(Reader);) {
+
+          String temp = bf.readLine();
 
           Alert alert = new Alert(AlertType.INFORMATION);
           while (temp != null) {
