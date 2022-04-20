@@ -1,7 +1,11 @@
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
@@ -40,7 +44,7 @@ public class FileIO {
             BufferedReader bf = new BufferedReader(Reader);) {
 
           String temp = bf.readLine();
-          
+
           while (temp != null) {
 
             texttoshow.append(temp);
@@ -86,23 +90,60 @@ public class FileIO {
           e.printStackTrace();
         }
       }
-    }
+    } else if (IsBinaryFile(UserInputFile)) {
+      String temp;
+      try (DataInputStream userbinaryinput = new DataInputStream(new FileInputStream(UserInputFile));) {
 
+        temp = userbinaryinput.readUTF();
+
+        while (temp != null) {
+
+          texttoshow.append(temp);
+          texttoshow.append(System.lineSeparator());
+          userbinaryinput.readUTF();
+        }
+
+        TextAreaUI.setText(texttoshow.toString());
+        TextAreaUI.setEditable(true);
+
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   public void SaveFile() {
-       //อันนี้ลองเขียนดูแต่เหมือนมันจะใช้ไม่ได้
-       try {
-        FileWriter fileWriter;
-         
-        fileWriter = new FileWriter(UserInputFile);
-        fileWriter.write(TextAreaUI.getText());
-        fileWriter.close();
+    // อันนี้ลองเขียนดูแต่เหมือนมันจะใช้ไม่ได้
+    try {
+      FileWriter fileWriter;
+
+      fileWriter = new FileWriter(UserInputFile);
+      fileWriter.write(TextAreaUI.getText());
+      fileWriter.close();
     } catch (Exception e) {
       e.printStackTrace();
 
     }
-    
+
+  }
+
+  public boolean IsBinaryFile(File F) {
+    try {
+      String type = Files.probeContentType(F.toPath());
+      if (type == null) {
+        // type couldn't be determined, assume binary
+        return true;
+      } else if (type.startsWith("text")) {
+        return false;
+      } else {
+        // type isn't text
+        return true;
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+      return true;
+    }
+
   }
 
 }
