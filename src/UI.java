@@ -15,6 +15,8 @@ public class UI extends BorderPane {
   private static Stage stage;
   private static MenuBar menuBar;
 
+  private static FileIO fileIO;
+
   public UI(Stage stage) {
     UI.stage = stage;
 
@@ -23,6 +25,8 @@ public class UI extends BorderPane {
 
     textArea = new TextArea();
     setCenter(textArea);
+
+    fileIO = new FileIO(stage, textArea);
 
     display();
   }
@@ -86,7 +90,7 @@ public class UI extends BorderPane {
   }
 
   public static void onOpen() {
-    FileIO fileIO = new FileIO(stage, textArea);
+    
     fileIO.OpenFile();
   }
 
@@ -95,7 +99,6 @@ public class UI extends BorderPane {
   }
 
   public static void onSaveAs() {
-    FileIO fileIO = new FileIO(stage, textArea);
     fileIO.SaveFile();
     FileChooser fileChooser = new FileChooser();
     
