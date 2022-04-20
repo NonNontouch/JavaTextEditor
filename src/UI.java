@@ -97,7 +97,7 @@ public class UI extends BorderPane {
   public static void onSaveAs() {
     FileIO fileIO = new FileIO(stage, textArea);
     fileIO.SaveFile();
-    /*FileChooser fileChooser = new FileChooser();
+    FileChooser fileChooser = new FileChooser();
     
     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
     FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("All Files", "*.*");
@@ -106,7 +106,7 @@ public class UI extends BorderPane {
 
     File file = fileChooser.showSaveDialog(UI.stage);
     if(file != null) if(file.exists()) {
-      textArea.getText();
+      //ตรงนี้ต้องเขียนโปรแกรมให้รับตัวหนังสือจาก text editer
   } else {
       try { 
         file.createNewFile(); 
@@ -114,8 +114,8 @@ public class UI extends BorderPane {
       catch(Exception e) { 
         return; 
       }
-      textArea.getText();
-  }*/
+      //ตรงนี้ต้องเขียนโปรแกรมให้รับตัวหนังสือจาก text editer
+  }
 
   }
 
