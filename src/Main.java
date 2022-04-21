@@ -10,7 +10,7 @@ public class Main extends Application {
   private static Stage stage;
   private static FileIO fileIO;
   private static UI ui;
-  
+
   @Override
   public void start(Stage primaryStage) {
     stage = primaryStage;
@@ -22,7 +22,9 @@ public class Main extends Application {
     primaryStage.setTitle("Notepad--");
     primaryStage.show();
 
-    fileIO = new FileIO(primaryStage, ui.getTextArea());
+    fileIO = new FileIO(ui.getTextArea());
+    TextControl textcontroler = new TextControl(scene, ui.getTextArea());
+
   }
 
   public static void onNew() {
@@ -30,7 +32,7 @@ public class Main extends Application {
   }
 
   public static void onOpen() {
-    
+
     fileIO.OpenFile();
   }
 
@@ -41,24 +43,24 @@ public class Main extends Application {
   public static void onSaveAs() {
     fileIO.SaveFile();
     FileChooser fileChooser = new FileChooser();
-    
+
     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
     FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("All Files", "*.*");
     fileChooser.getExtensionFilters().add(extFilter);
     fileChooser.getExtensionFilters().add(extFilter2);
 
     File file = fileChooser.showSaveDialog(stage);
-    if(file != null) if(file.exists()) {
-      //ตรงนี้ต้องเขียนโปรแกรมให้รับตัวหนังสือจาก text editer
-  } else {
-      try { 
-        file.createNewFile(); 
+    if (file != null)
+      if (file.exists()) {
+        // ตรงนี้ต้องเขียนโปรแกรมให้รับตัวหนังสือจาก text editer
+      } else {
+        try {
+          file.createNewFile();
+        } catch (Exception e) {
+          return;
+        }
+        // ตรงนี้ต้องเขียนโปรแกรมให้รับตัวหนังสือจาก text editer
       }
-      catch(Exception e) { 
-        return; 
-      }
-      //ตรงนี้ต้องเขียนโปรแกรมให้รับตัวหนังสือจาก text editer
-  }
 
   }
 

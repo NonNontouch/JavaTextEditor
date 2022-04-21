@@ -20,14 +20,15 @@ public class FileIO {
   private FileChooser Chooser;
   private Stage FileIOStage;
 
-  public FileIO(Stage primaryStage, TextArea tf) {
+  public FileIO( TextArea tf) {
+    FileIOStage = new Stage();
+
     Chooser = new FileChooser();
     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Document (*.txt)", "*.txt");
     FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("All Files", "*.*");
     Chooser.getExtensionFilters().add(extFilter);
     Chooser.getExtensionFilters().add(extFilter2);
     
-    FileIOStage = primaryStage;
     TextAreaUI = tf;
   }
 
