@@ -10,9 +10,11 @@ public class Main extends Application {
   private static Stage stage;
   private static FileIO fileIO;
   private static UI ui;
+  private static TextControl textcontroler;
 
   @Override
   public void start(Stage primaryStage) {
+
     stage = primaryStage;
 
     ui = new UI(primaryStage);
@@ -23,7 +25,7 @@ public class Main extends Application {
     primaryStage.show();
 
     fileIO = new FileIO(ui.getTextArea());
-    TextControl textcontroler = new TextControl(scene, ui.getTextArea());
+    textcontroler = new TextControl(primaryStage, ui.getTextArea());
 
   }
 
@@ -110,6 +112,12 @@ public class Main extends Application {
 
   public static void onHelp() {
     System.out.println("Help");
+  }
+
+  public static void onFormat() {
+    
+    textcontroler.TextControlEvent();
+    
   }
 
   public static void main(String[] args) {
