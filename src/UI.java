@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 public class UI extends BorderPane {
   private MenuBar menuBar;
   private TextArea textArea;
+  private TextControl textControler;
 
   public UI(Stage stage) {
     initMenuBar();
@@ -15,6 +16,8 @@ public class UI extends BorderPane {
 
     textArea = new TextArea();
     setCenter(textArea);
+    
+    
   }
 
   public TextArea getTextArea() {
@@ -65,6 +68,11 @@ public class UI extends BorderPane {
 
     final Menu helpMenu = new Menu("Help", null, iAbout);
 
-    menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, helpMenu);
+    MenuItem iformat = new MenuItem("Edit Format");
+    iformat.setOnAction(e -> Main.onFormat());
+
+    final Menu format = new Menu("Format", null, iformat);
+
+    menuBar.getMenus().addAll(fileMenu, editMenu, viewMenu, format, helpMenu);
   }
 }
