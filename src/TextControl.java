@@ -3,6 +3,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -11,6 +12,8 @@ import javafx.stage.Stage;
 public class TextControl {
 
     private TextArea textArea;
+    private TextArea SampleTextArea;
+
     private Stage textStage;
     private GridPane secondaryLayout;
 
@@ -27,13 +30,13 @@ public class TextControl {
     public void TextControlEvent() {
 
         secondaryLayout = new GridPane();
-        secondaryLayout.setHgap(10);
-        secondaryLayout.setVgap(5);
+        secondaryLayout.setHgap(15);
+        secondaryLayout.setVgap(10);
         secondaryLayout.setAlignment(Pos.CENTER);
 
         initFields();
 
-        Scene secondScene = new Scene(secondaryLayout, 270, 100);
+        Scene secondScene = new Scene(secondaryLayout, 450, 300);
 
         // สร้าง stage ใหม่
         Stage textcontrolstage = new Stage();
@@ -51,15 +54,22 @@ public class TextControl {
         textcontrolstage.setY(textStage.getY());
 
         textcontrolstage.show();
+        
 
     }
-    
+
     private void initFields() {
+
+        SampleTextArea = new TextArea("Sample Text");
+        SampleTextArea.setPrefSize(200, 150);
+        SampleTextArea.setFont(textArea.getFont());
+        SampleTextArea.setEditable(false);
 
         fontSize = new ComboBox<Integer>();
         for (int i = 8; i <= 72; i++) {
             fontSize.getItems().add(i);
         }
+        fontSize.setValue((int) textArea.getFont().getSize());
 
         secondaryLayout.add(new Label("Font Size: "), 0, 0);
         secondaryLayout.add(fontSize, 0, 1);
@@ -68,11 +78,14 @@ public class TextControl {
             String fontFamily = textArea.getFont().getFamily();
             Integer size = fontSize.getSelectionModel().getSelectedItem();
             textArea.setFont(Font.font(fontFamily, size));
+            SampleTextArea.setFont(Font.font(fontFamily, size));
+            
         });
 
         fontFamily = new ComboBox<String>();
         fontFamily.getItems().addAll(Font.getFamilies());
         fontFamily.setMaxWidth(150);
+        fontFamily.setValue(textArea.getFont().getFamily());
 
         secondaryLayout.add(new Label("Font Family: "), 1, 0);
         secondaryLayout.add(fontFamily, 1, 1);
@@ -81,6 +94,10 @@ public class TextControl {
             String family = fontFamily.getSelectionModel().getSelectedItem();
             double size = textArea.getFont().getSize();
             textArea.setFont(Font.font(family, size));
+            SampleTextArea.setFont(Font.font(family, size));
         });
+
+        secondaryLayout.add(SampleTextArea, 0, 2);
+
     }
 }
