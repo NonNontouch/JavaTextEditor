@@ -119,7 +119,7 @@ public class FileIO {
   }
 
   public void SaveFile() {
-    if (UserInputFile != null)
+    if (UserInputFile != null){
       if (UserInputFile.exists()) {
         try {
           FileWriter fileWriter;
@@ -133,6 +133,9 @@ public class FileIO {
         }
     
       }
+    }else{
+      SaveAsFile();
+    }
   }
 
   public void SaveAsFile() {
