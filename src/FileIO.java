@@ -119,7 +119,6 @@ public class FileIO {
   }
 
   public void SaveFile() {
-    // อันนี้ลองเขียนดูแต่เหมือนมันจะใช้ไม่ได้
     try {
       FileWriter fileWriter;
 

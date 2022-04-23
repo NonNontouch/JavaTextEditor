@@ -39,7 +39,7 @@ public class Main extends Application {
   }
 
   public static void onSave() {
-    System.out.println("Save");
+    fileIO.SaveFile();
   }
 
   public static void onSaveAs() {
