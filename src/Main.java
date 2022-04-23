@@ -1,9 +1,10 @@
-import java.io.File;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.stage.FileChooser;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -18,15 +19,47 @@ public class Main extends Application {
     stage = primaryStage;
 
     ui = new UI();
+    fileIO = new FileIO(ui.getTextArea());
+    textcontroler = new TextControl(primaryStage, ui.getTextArea());
 
     Scene scene = new Scene(ui, 800, 600);
     primaryStage.setScene(scene);
     primaryStage.setTitle("Notepad--");
     primaryStage.show();
+    primaryStage.setOnCloseRequest(event -> {
+      event.consume();
+      EventBeforeExit(stage);
+    });
+  }
 
-    fileIO = new FileIO(ui.getTextArea());
-    textcontroler = new TextControl(primaryStage, ui.getTextArea());
+  public static void EventBeforeExit(Stage stage) {
+    if (!ui.getTextArea().getText().equals("")) {
+      ButtonType savebtn = new ButtonType("Save");
+      ButtonType donotsavebtn = new ButtonType("Don't Save");
+      ButtonType cancelbtn = new ButtonType("Cancel");
+      Alert alert = new Alert(AlertType.CONFIRMATION);
+      alert.setTitle("Alert");
+      alert.setHeaderText("You're about to exit");
+      alert.setContentText("Do you want to save your file before exit");
+      alert.getButtonTypes().clear();
+      alert.getButtonTypes().addAll(savebtn, donotsavebtn, cancelbtn);
 
+      Optional<ButtonType> userinput = alert.showAndWait();
+      userinput.ifPresent(e -> {
+        if (e.equals(donotsavebtn)) {
+          stage.close();
+        } else if (e.equals(savebtn)) {
+          fileIO.SaveFile();
+          stage.close();
+        } else if (e.equals(cancelbtn)) {
+          alert.close();
+        }
+      });
+
+    } else {
+
+      stage.close();
+    }
   }
 
   public static void onNew() {
@@ -34,8 +67,8 @@ public class Main extends Application {
   }
 
   public static void onOpen() {
-
     fileIO.OpenFile();
+    fileIO.ChangeTitle(stage);
   }
 
   public static void onSave() {
@@ -45,10 +78,11 @@ public class Main extends Application {
 
   public static void onSaveAs() {
     fileIO.SaveAsFile();
+    fileIO.ChangeTitle(stage);
   }
 
   public static void onExit() {
-    System.exit(0);
+    EventBeforeExit(stage);
   }
 
   public static void onUndo() {
