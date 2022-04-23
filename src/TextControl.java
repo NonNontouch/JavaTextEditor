@@ -35,7 +35,7 @@ public class TextControl {
 
         initFields();
 
-        Scene secondScene = new Scene(secondaryLayout, 450, 300);
+        Scene secondScene = new Scene(secondaryLayout, 550, 340);
 
         // สร้าง stage ใหม่
         Stage textcontrolstage = new Stage();
@@ -59,7 +59,7 @@ public class TextControl {
     private void initFields() {
 
         SampleTextArea = new TextArea("Sample Text");
-        SampleTextArea.setPrefSize(200, 150);
+        SampleTextArea.setPrefSize(520, 250);
         SampleTextArea.setFont(textArea.getFont());
         SampleTextArea.setEditable(false);
 
@@ -94,7 +94,7 @@ public class TextControl {
             SampleTextArea.setFont(Font.font(family, size));
         });
 
-        secondaryLayout.add(SampleTextArea, 0, 2);
+        secondaryLayout.add(SampleTextArea, 0, 2, 2, 1);
 
     }
 
