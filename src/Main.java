@@ -71,18 +71,6 @@ public class Main extends Application {
     ui.getTextArea().paste();
   }
 
-  public static void onZoomIn() {
-    textcontroler.ZoomIn();
-  }
-
-  public static void onZoomOut() {
-    textcontroler.ZoomOut();
-  }
-
-  public static void onZoomReset() {
-    textcontroler.ZoomReset();
-  }
-
   public static void onAbout() {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setHeaderText(null);

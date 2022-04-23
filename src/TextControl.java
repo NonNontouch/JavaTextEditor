@@ -102,29 +102,4 @@ public class TextControl {
 
     }
 
-    public void ZoomIn() {
-
-        zoomcount++;
-        String fontFamily = textArea.getFont().getFamily();
-        double size = textArea.getFont().getSize() + zoomlevel;
-        textArea.setFont(Font.font(fontFamily, size));
-    }
-
-    public void ZoomOut() {
-        if (zoomcount > 0) {
-            zoomcount--;
-            String fontFamily = textArea.getFont().getFamily();
-            double size = textArea.getFont().getSize() - zoomlevel;
-            textArea.setFont(Font.font(fontFamily, size));
-        }
-
-    }
-
-    public void ZoomReset() {
-        String fontFamily = textArea.getFont().getFamily();
-        double size = textArea.getFont().getSize() - (zoomlevel * zoomcount);
-        textArea.setFont(Font.font(fontFamily, size));
-        zoomcount = 0;
-    }
-
 }
