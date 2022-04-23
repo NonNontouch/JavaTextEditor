@@ -16,8 +16,7 @@ public class UI extends BorderPane {
 
     textArea = new TextArea();
     setCenter(textArea);
-    
-    
+
   }
 
   public TextArea getTextArea() {
@@ -61,7 +60,16 @@ public class UI extends BorderPane {
 
     final Menu editMenu = new Menu("Edit", null, iUndo, iRedo, iCut, iCopy, iPaste);
 
-    final Menu viewMenu = new Menu("View", null);
+    MenuItem iZoomIn = new MenuItem("Zoom In");
+    iZoomIn.setOnAction(e -> Main.onZoomIn());
+
+    MenuItem iZoomOut = new MenuItem("Zoom Out");
+    iZoomOut.setOnAction(e -> Main.onZoomOut());
+
+    MenuItem iZoomReset = new MenuItem("Reset Zoom");
+    iZoomReset.setOnAction(e -> Main.onZoomReset());
+
+    final Menu viewMenu = new Menu("View", null, iZoomIn, iZoomOut, iZoomReset);
 
     MenuItem iAbout = new MenuItem("About");
     iAbout.setOnAction(e -> Main.onAbout());

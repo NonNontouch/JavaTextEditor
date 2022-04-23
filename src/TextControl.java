@@ -20,6 +20,9 @@ public class TextControl {
     private ComboBox<Integer> fontSize;
     private ComboBox<String> fontFamily;
 
+    private double zoomlevel = 2;
+    private int zoomcount = 0;
+
     public TextControl(Stage inputstage, TextArea inputTextArea) {
 
         this.textArea = inputTextArea;
@@ -54,7 +57,6 @@ public class TextControl {
         textcontrolstage.setY(textStage.getY());
 
         textcontrolstage.show();
-        
 
     }
 
@@ -76,10 +78,9 @@ public class TextControl {
 
         fontSize.setOnAction(e -> {
             String fontFamily = textArea.getFont().getFamily();
-            Integer size = fontSize.getSelectionModel().getSelectedItem();
+            double size = fontSize.getSelectionModel().getSelectedItem();
             textArea.setFont(Font.font(fontFamily, size));
             SampleTextArea.setFont(Font.font(fontFamily, size));
-            
         });
 
         fontFamily = new ComboBox<String>();
@@ -100,4 +101,30 @@ public class TextControl {
         secondaryLayout.add(SampleTextArea, 0, 2);
 
     }
+
+    public void ZoomIn() {
+
+        zoomcount++;
+        String fontFamily = textArea.getFont().getFamily();
+        double size = textArea.getFont().getSize() + zoomlevel;
+        textArea.setFont(Font.font(fontFamily, size));
+    }
+
+    public void ZoomOut() {
+        if (zoomcount > 0) {
+            zoomcount--;
+            String fontFamily = textArea.getFont().getFamily();
+            double size = textArea.getFont().getSize() - zoomlevel;
+            textArea.setFont(Font.font(fontFamily, size));
+        }
+
+    }
+
+    public void ZoomReset() {
+        String fontFamily = textArea.getFont().getFamily();
+        double size = textArea.getFont().getSize() - (zoomlevel * zoomcount);
+        textArea.setFont(Font.font(fontFamily, size));
+        zoomcount = 0;
+    }
+
 }
