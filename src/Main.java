@@ -91,15 +91,15 @@ public class Main extends Application {
   }
 
   public static void onZoomIn() {
-    System.out.println("Zoom In");
+    textcontroler.ZoomIn();
   }
 
   public static void onZoomOut() {
-    System.out.println("Zoom Out");
+    textcontroler.ZoomOut();
   }
 
   public static void onZoomReset() {
-    System.out.println("Zoom Reset");
+    textcontroler.ZoomReset();
   }
 
   public static void onAbout() {
@@ -115,9 +115,9 @@ public class Main extends Application {
   }
 
   public static void onFormat() {
-    
+
     textcontroler.TextControlEvent();
-    
+
   }
 
   public static void main(String[] args) {
