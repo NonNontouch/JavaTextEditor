@@ -119,16 +119,59 @@ public class FileIO {
   }
 
   public void SaveFile() {
-    try {
-      FileWriter fileWriter;
+    if (UserInputFile != null)
+      if (UserInputFile.exists()) {
+        try {
+          FileWriter fileWriter;
+    
+          fileWriter = new FileWriter(UserInputFile);
+          fileWriter.write(TextAreaUI.getText());
+          fileWriter.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+    
+        }
+    
+      }
+  }
 
-      fileWriter = new FileWriter(UserInputFile);
-      fileWriter.write(TextAreaUI.getText());
-      fileWriter.close();
-    } catch (Exception e) {
-      e.printStackTrace();
+  public void SaveAsFile() {
+    FileChooser fileChooser = new FileChooser();
 
-    }
+    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+    FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("All Files", "*.*");
+    fileChooser.getExtensionFilters().add(extFilter);
+    fileChooser.getExtensionFilters().add(extFilter2);
+
+    File file = fileChooser.showSaveDialog(FileIOStage);
+    if (file != null)
+      if (file.exists()) {
+        try {
+          FileWriter fileWriter;
+    
+          fileWriter = new FileWriter(UserInputFile);
+          fileWriter.write(TextAreaUI.getText());
+          fileWriter.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+    
+        }
+    
+      } else {
+        try {
+          file.createNewFile();
+          FileWriter fileWriter;
+    
+          fileWriter = new FileWriter(file);
+          fileWriter.write(TextAreaUI.getText());
+          fileWriter.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+    
+        }
+    
+      }
+ 
 
   }
 
