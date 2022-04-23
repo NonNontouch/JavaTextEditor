@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 public class FileIO {
 
   private TextArea TextAreaUI;
+  private TextArea saveTextArea;
 
   private File UserInputFile;
 
@@ -30,6 +31,7 @@ public class FileIO {
     Chooser.getExtensionFilters().add(extFilter2);
 
     TextAreaUI = tf;
+    saveTextArea = new TextArea();
   }
 
   public void OpenFile() {
@@ -68,6 +70,8 @@ public class FileIO {
 
           TextAreaUI.setText(texttoshow.toString());
           TextAreaUI.setEditable(true);
+
+          saveTextArea.setText(texttoshow.toString());
 
         } catch (Exception e) {
           e.printStackTrace();
@@ -111,8 +115,8 @@ public class FileIO {
         alert.setContentText("This program can't open Binary file.");
         alert.show();
       }
-      // เมื่อ user กด open อีกรอบจะเป็น directory ที่อยู่ล่าสุด
 
+      // เมื่อ user กด open อีกรอบจะเป็น directory ที่อยู่ล่าสุด
       Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
 
     }
@@ -152,7 +156,7 @@ public class FileIO {
         }
 
       } else {
-        try(FileWriter fileWriter= new FileWriter(file);) {
+        try (FileWriter fileWriter = new FileWriter(file);) {
           file.createNewFile();
 
           fileWriter.write(TextAreaUI.getText());
@@ -181,4 +185,11 @@ public class FileIO {
 
   }
 
+  public void ChangeTitle(Stage inputStage) {
+    inputStage.setTitle(UserInputFile.getName());
+  }
+
+  public TextArea getSaveTextArea() {
+    return saveTextArea;
+  }
 }
