@@ -20,7 +20,7 @@ public class FileIO {
   private FileChooser Chooser;
   private Stage FileIOStage;
 
-  public FileIO( TextArea tf) {
+  public FileIO(TextArea tf) {
     FileIOStage = new Stage();
 
     Chooser = new FileChooser();
@@ -28,7 +28,7 @@ public class FileIO {
     FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("All Files", "*.*");
     Chooser.getExtensionFilters().add(extFilter);
     Chooser.getExtensionFilters().add(extFilter2);
-    
+
     TextAreaUI = tf;
   }
 
@@ -112,69 +112,57 @@ public class FileIO {
         alert.show();
       }
       // เมื่อ user กด open อีกรอบจะเป็น directory ที่อยู่ล่าสุด
-      
-        Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
-      
+
+      Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
+
     }
   }
 
   public void SaveFile() {
-    if (UserInputFile != null){
+    if (UserInputFile != null) {
+
       if (UserInputFile.exists()) {
-        try {
-          FileWriter fileWriter;
-    
-          fileWriter = new FileWriter(UserInputFile);
+
+        try (FileWriter fileWriter = new FileWriter(UserInputFile)) {
+
           fileWriter.write(TextAreaUI.getText());
           fileWriter.close();
+
         } catch (Exception e) {
           e.printStackTrace();
-    
         }
-    
       }
-    }else{
+    } else {
       SaveAsFile();
     }
   }
 
   public void SaveAsFile() {
-    FileChooser fileChooser = new FileChooser();
 
-    FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-    FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("All Files", "*.*");
-    fileChooser.getExtensionFilters().add(extFilter);
-    fileChooser.getExtensionFilters().add(extFilter2);
-
-    File file = fileChooser.showSaveDialog(FileIOStage);
+    File file = Chooser.showSaveDialog(FileIOStage);
     if (file != null)
       if (file.exists()) {
-        try {
-          FileWriter fileWriter;
-    
-          fileWriter = new FileWriter(UserInputFile);
+        try (FileWriter fileWriter = new FileWriter(UserInputFile)) {
+
           fileWriter.write(TextAreaUI.getText());
           fileWriter.close();
         } catch (Exception e) {
           e.printStackTrace();
-    
+
         }
-    
+
       } else {
-        try {
+        try(FileWriter fileWriter= new FileWriter(file);) {
           file.createNewFile();
-          FileWriter fileWriter;
-    
-          fileWriter = new FileWriter(file);
+
           fileWriter.write(TextAreaUI.getText());
           fileWriter.close();
         } catch (Exception e) {
           e.printStackTrace();
-    
+
         }
-    
+
       }
- 
 
   }
 

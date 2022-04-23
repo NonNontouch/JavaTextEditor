@@ -3,7 +3,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -19,9 +18,6 @@ public class TextControl {
 
     private ComboBox<Integer> fontSize;
     private ComboBox<String> fontFamily;
-
-    private double zoomlevel = 2;
-    private int zoomcount = 0;
 
     public TextControl(Stage inputstage, TextArea inputTextArea) {
 
@@ -77,10 +73,10 @@ public class TextControl {
         secondaryLayout.add(fontSize, 0, 1);
 
         fontSize.setOnAction(e -> {
-            String fontFamily = textArea.getFont().getFamily();
+            String family = textArea.getFont().getFamily();
             double size = fontSize.getSelectionModel().getSelectedItem();
-            textArea.setFont(Font.font(fontFamily, size));
-            SampleTextArea.setFont(Font.font(fontFamily, size));
+            textArea.setFont(Font.font(family, size));
+            SampleTextArea.setFont(Font.font(family, size));
         });
 
         fontFamily = new ComboBox<String>();
