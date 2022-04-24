@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 import javafx.scene.control.Alert;
@@ -55,7 +56,7 @@ public class FileIO {
         // ไฟล์สามารถเปิดอ่านและเขียนได้
         try (
 
-            FileReader Reader = new FileReader(UserInputFile);
+            FileReader Reader = new FileReader(UserInputFile, StandardCharsets.UTF_8);
             BufferedReader bf = new BufferedReader(Reader);) {
 
           String temp = bf.readLine();
@@ -82,11 +83,10 @@ public class FileIO {
 
         try (
 
-            FileReader Reader = new FileReader(UserInputFile);
+            FileReader Reader = new FileReader(UserInputFile, StandardCharsets.UTF_8);
             BufferedReader bf = new BufferedReader(Reader);) {
 
           String temp = bf.readLine();
-
           Alert alert = new Alert(AlertType.INFORMATION);
           while (temp != null) {
             // loop อ่านซ้ำจนกว่าจะเป็น null(ถึงตัวสุดท้าย)
@@ -125,10 +125,10 @@ public class FileIO {
 
   public void SaveFile() {
     if (UserInputFile != null) {
-
+      // ถ้าเปิดไฟล์อยู่ก็ให้เซฟทับ
       if (UserInputFile.exists()) {
 
-        try (FileWriter fileWriter = new FileWriter(UserInputFile)) {
+        try (FileWriter fileWriter = new FileWriter(UserInputFile, StandardCharsets.UTF_8)) {
 
           fileWriter.write(TextAreaUI.getText());
           Main.setSavestage(false);
@@ -137,18 +137,21 @@ public class FileIO {
         }
       }
     } else {
+      // ถ้าไม่ก็ให้เด้งไป save as
       SaveAsFile();
     }
   }
 
   public void SaveAsFile() {
 
-    UserInputFile = Chooser.showSaveDialog(FileIOStage);
-    if (UserInputFile != null)
-      if (UserInputFile.exists()) {
-        try (FileWriter fileWriter = new FileWriter(UserInputFile)) {
+    File file = Chooser.showSaveDialog(FileIOStage);
 
+    if (file != null)
+      if (file.exists()) {
+        try (FileWriter fileWriter = new FileWriter(UserInputFile);) {
           fileWriter.write(TextAreaUI.getText());
+          fileWriter.close();
+          UserInputFile = new File(file.getPath());
           Main.setSavestage(false);
         } catch (Exception e) {
           e.printStackTrace();
@@ -156,15 +159,17 @@ public class FileIO {
         }
 
       } else {
-        try (FileWriter fileWriter = new FileWriter(UserInputFile);) {
-          UserInputFile.createNewFile();
+        try (FileWriter fileWriter = new FileWriter(file);) {
+          file.createNewFile();
+
           fileWriter.write(TextAreaUI.getText());
+          fileWriter.close();
+          
+          UserInputFile = new File(file.getPath());
           Main.setSavestage(false);
         } catch (Exception e) {
           e.printStackTrace();
-
         }
-
       }
     ChangeTitle(FileIOStage);
 
@@ -186,7 +191,9 @@ public class FileIO {
   }
 
   public void ChangeTitle(Stage inputStage) {
-    inputStage.setTitle(UserInputFile.getName());
+    if (UserInputFile != null) {
+      inputStage.setTitle(UserInputFile.getName());
+    }
   }
 
   public TextArea getSaveTextArea() {
