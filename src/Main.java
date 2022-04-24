@@ -12,6 +12,7 @@ public class Main extends Application {
   private static FileIO fileIO;
   private static UI ui;
   private static TextControl textcontroler;
+  private static boolean must_save = false;
 
   @Override
   public void start(Stage primaryStage) {
@@ -19,7 +20,9 @@ public class Main extends Application {
     stage = primaryStage;
 
     ui = new UI();
-    fileIO = new FileIO(ui.getTextArea());
+    ui.getTextArea().setOnKeyPressed(e -> isKeypressed());
+
+    fileIO = new FileIO(ui.getTextArea(),primaryStage);
     textcontroler = new TextControl(primaryStage, ui.getTextArea());
 
     Scene scene = new Scene(ui, 800, 600);
@@ -30,10 +33,11 @@ public class Main extends Application {
       event.consume();
       EventBeforeExit(stage);
     });
+
   }
 
   public static void EventBeforeExit(Stage stage) {
-    if (!ui.getTextArea().getText().equals("")) {
+    if (!ui.getTextArea().getText().equals("") && must_save) {
       ButtonType savebtn = new ButtonType("Save");
       ButtonType donotsavebtn = new ButtonType("Don't Save");
       ButtonType cancelbtn = new ButtonType("Cancel");
@@ -62,18 +66,16 @@ public class Main extends Application {
     }
   }
 
-  public static void onNew() {
-    System.out.println("New");
+  public static void onNew(String[] args) {
+    launch(args);
   }
 
   public static void onOpen() {
-    fileIO.OpenFile();
-    fileIO.ChangeTitle(stage);
+    fileIO.OpenFile();    
   }
 
   public static void onSave() {
     fileIO.SaveFile();
-
   }
 
   public static void onSaveAs() {
@@ -121,6 +123,14 @@ public class Main extends Application {
 
     textcontroler.TextControlEvent();
 
+  }
+
+  public static void isKeypressed() {
+    must_save = true;
+  }
+
+  public static void setSavestage(boolean in) {
+    must_save = in;
   }
 
   public static void main(String[] args) {
