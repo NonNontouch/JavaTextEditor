@@ -23,6 +23,7 @@ public class TextControl {
 
         this.textArea = inputTextArea;
         this.textStage = inputstage;
+        textArea.setFont(Font.font("System", 16));
 
     }
 
@@ -51,6 +52,8 @@ public class TextControl {
         // เซทตำแหน่งให้อยู่ซ้ายบนเสมอ
         textcontrolstage.setX(textStage.getX());
         textcontrolstage.setY(textStage.getY());
+
+        textcontrolstage.setResizable(false);
 
         textcontrolstage.show();
 
