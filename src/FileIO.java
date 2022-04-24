@@ -21,8 +21,8 @@ public class FileIO {
   private FileChooser Chooser;
   private Stage FileIOStage;
 
-  public FileIO(TextArea tf) {
-    FileIOStage = new Stage();
+  public FileIO(TextArea tf, Stage primaryStage) {
+    FileIOStage = primaryStage;
 
     Chooser = new FileChooser();
     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Document (*.txt)", "*.txt");
@@ -118,7 +118,8 @@ public class FileIO {
 
       // เมื่อ user กด open อีกรอบจะเป็น directory ที่อยู่ล่าสุด
       Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
-
+      Main.setSavestage(false);
+      ChangeTitle(FileIOStage);
     }
   }
 
@@ -130,8 +131,7 @@ public class FileIO {
         try (FileWriter fileWriter = new FileWriter(UserInputFile)) {
 
           fileWriter.write(TextAreaUI.getText());
-          fileWriter.close();
-
+          Main.setSavestage(false);
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -143,30 +143,30 @@ public class FileIO {
 
   public void SaveAsFile() {
 
-    File file = Chooser.showSaveDialog(FileIOStage);
-    if (file != null)
-      if (file.exists()) {
+    UserInputFile = Chooser.showSaveDialog(FileIOStage);
+    if (UserInputFile != null)
+      if (UserInputFile.exists()) {
         try (FileWriter fileWriter = new FileWriter(UserInputFile)) {
 
           fileWriter.write(TextAreaUI.getText());
-          fileWriter.close();
+          Main.setSavestage(false);
         } catch (Exception e) {
           e.printStackTrace();
 
         }
 
       } else {
-        try (FileWriter fileWriter = new FileWriter(file);) {
-          file.createNewFile();
-
+        try (FileWriter fileWriter = new FileWriter(UserInputFile);) {
+          UserInputFile.createNewFile();
           fileWriter.write(TextAreaUI.getText());
-          fileWriter.close();
+          Main.setSavestage(false);
         } catch (Exception e) {
           e.printStackTrace();
 
         }
 
       }
+    ChangeTitle(FileIOStage);
 
   }
 
@@ -191,5 +191,9 @@ public class FileIO {
 
   public TextArea getSaveTextArea() {
     return saveTextArea;
+  }
+
+  public File getuserinputfile() {
+    return UserInputFile;
   }
 }
