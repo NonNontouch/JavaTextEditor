@@ -25,7 +25,7 @@ public class UI extends BorderPane {
     menuBar = new MenuBar();
 
     MenuItem iNew = new MenuItem("New");
-    iNew.setOnAction(e -> Main.onNew());
+    // iNew.setOnAction(e -> Main.onNew());
 
     MenuItem iOpen = new MenuItem("Open");
     iOpen.setOnAction(e -> Main.onOpen());
