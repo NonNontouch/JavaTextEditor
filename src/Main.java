@@ -23,7 +23,11 @@ public class Main extends Application {
     stage = primaryStage;
 
     ui = new UI();
-    ui.getTextArea().setOnKeyPressed(e -> isKeypressed());
+    ui.getTextArea().setOnKeyPressed(e -> {
+      if (!must_save) {
+        isKeypressed();
+      }
+    });
 
     fileIO = new FileIO(ui.getTextArea(), primaryStage);
     textcontroler = new TextControl(primaryStage, ui.getTextArea());
@@ -139,7 +143,7 @@ public class Main extends Application {
 
   }
 
-  public static void isKeypressed() {
+  public void isKeypressed() {
     must_save = true;
   }
 
