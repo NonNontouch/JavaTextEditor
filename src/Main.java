@@ -1,3 +1,5 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -5,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -22,7 +25,7 @@ public class Main extends Application {
     ui = new UI();
     ui.getTextArea().setOnKeyPressed(e -> isKeypressed());
 
-    fileIO = new FileIO(ui.getTextArea(),primaryStage);
+    fileIO = new FileIO(ui.getTextArea(), primaryStage);
     textcontroler = new TextControl(primaryStage, ui.getTextArea());
 
     Scene scene = new Scene(ui, 800, 600);
@@ -71,7 +74,7 @@ public class Main extends Application {
   }
 
   public static void onOpen() {
-    fileIO.OpenFile();    
+    fileIO.OpenFile();
   }
 
   public static void onSave() {
@@ -108,11 +111,22 @@ public class Main extends Application {
   }
 
   public static void onAbout() {
+    Stage alertStage = new Stage();
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setHeaderText(null);
     alert.setTitle("About");
-    alert.setContentText("This is a Notepad--");
-    alert.show();
+    alert.setContentText(
+        "This is a Notepad-- \nThis program is developed by \n64011106 ณรงค์พล กิจรังสรรค์ \n64011160 นนทัช มุกลีมาศ \n64011273 วิชชุ ศรีโยธี \n64011301 สิทธิ นวะมะวัฒน์");
+
+    alert.getDialogPane().setStyle("-fx-font-size: 15;");
+    alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+    try {
+      alertStage.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    alertStage.show();
   }
 
   public static void onHelp() {
