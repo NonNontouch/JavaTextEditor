@@ -148,9 +148,8 @@ public class FileIO {
 
     if (file != null)
       if (file.exists()) {
-        try (FileWriter fileWriter = new FileWriter(UserInputFile, StandardCharsets.UTF_8)) {
+        try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
           fileWriter.write(TextAreaUI.getText());
-          fileWriter.close();
           UserInputFile = new File(file.getPath());
           Main.setSavestage(false);
         } catch (Exception e) {
@@ -163,7 +162,6 @@ public class FileIO {
           file.createNewFile();
 
           fileWriter.write(TextAreaUI.getText());
-          fileWriter.close();
 
           UserInputFile = new File(file.getPath());
           Main.setSavestage(false);
