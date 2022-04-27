@@ -35,6 +35,11 @@ public class Main extends Application {
     Scene scene = new Scene(ui, 800, 600);
     primaryStage.setScene(scene);
     primaryStage.setTitle("Notepad--");
+    try {
+      primaryStage.getIcons().add(new Image(new FileInputStream("Picture/Icon.png")));
+    } catch (FileNotFoundException e1) {
+      e1.printStackTrace();
+    }
     primaryStage.show();
     primaryStage.setOnCloseRequest(event -> {
       event.consume();
