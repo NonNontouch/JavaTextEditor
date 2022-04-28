@@ -9,6 +9,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class Main extends Application {
   private static Stage stage;
@@ -60,6 +61,14 @@ public class Main extends Application {
       alert.getButtonTypes().clear();
       alert.getButtonTypes().addAll(savebtn, donotsavebtn, cancelbtn);
 
+      Stage window = (Stage) alert.getDialogPane().getScene().getWindow();
+      window.setOnCloseRequest(e -> alert.close());
+      try {
+        window.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
+      } catch (FileNotFoundException e1) {
+        e1.printStackTrace();
+      }
+
       Optional<ButtonType> userinput = alert.showAndWait();
       userinput.ifPresent(e -> {
         if (e.equals(donotsavebtn)) {
@@ -73,7 +82,6 @@ public class Main extends Application {
       });
 
     } else {
-
       stage.close();
     }
   }
@@ -117,6 +125,10 @@ public class Main extends Application {
 
   public static void onPaste() {
     ui.getTextArea().paste();
+  }
+
+  public static void onFind(){
+    textcontroler.TextFinderEvent();
   }
 
   public static void onAbout() {
