@@ -1,5 +1,9 @@
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -86,8 +90,16 @@ public class Main extends Application {
     }
   }
 
-  public static void onNew(String[] args) {
-    launch(args);
+  public static void onNew() {
+    ProcessBuilder processBuilder = new ProcessBuilder("run.bat");
+    
+    try {
+      Process process = Runtime.getRuntime().exec(
+        "cmd /c run.bat");
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   public static void onOpen() {
