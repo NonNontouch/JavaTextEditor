@@ -1,3 +1,5 @@
+import javax.swing.plaf.multi.MultiButtonUI;
+
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
@@ -56,7 +58,10 @@ public class UI extends BorderPane {
     MenuItem iPaste = new MenuItem("Paste");
     iPaste.setOnAction(e -> Main.onPaste());
 
-    final Menu editMenu = new Menu("Edit", null, iUndo, iRedo, iCut, iCopy, iPaste);
+    MenuItem iFind = new MenuItem("Find");
+    iFind.setOnAction(e -> Main.onFind());
+
+    final Menu editMenu = new Menu("Edit", null, iUndo, iRedo, iCut, iCopy, iPaste, iFind);
 
     MenuItem iAbout = new MenuItem("About");
     iAbout.setOnAction(e -> Main.onAbout());
