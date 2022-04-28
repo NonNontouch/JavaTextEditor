@@ -75,7 +75,7 @@ public class FileIO {
           TextAreaUI.setEditable(true);
 
           saveTextArea.setText(texttoshow.toString());
-          
+
           isreadOnly = false;
 
         } catch (Exception e) {
@@ -129,7 +129,8 @@ public class FileIO {
     }
   }
 
-  public void SaveFile() {
+  public short SaveFile() {
+     //return 0 เมื่อ save สำเร็จ 1 เมื่อ Fail
     if (UserInputFile != null && !isreadOnly) {
       // ถ้าเปิดไฟล์อยู่ก็ให้เซฟทับ
       if (UserInputFile.exists()) {
@@ -138,30 +139,24 @@ public class FileIO {
 
           fileWriter.write(TextAreaUI.getText());
           Main.setSavestage(false);
+          return 0;
         } catch (Exception e) {
           e.printStackTrace();
         }
       }
     } else if (!isreadOnly) {
       // ถ้าไม่ก็ให้เด้งไป save as
-      SaveAsFile();
+      return SaveAsFile();
     }
+    return 1;
   }
 
-  public void ClearText() {
-    TextAreaUI.clear();
-  }
-
-  public void ResetText() {
-    TextControl textControl = new TextControl(FileIOStage, TextAreaUI);
-  }
-
-  public void SaveAsFile() {
-
+  public short SaveAsFile() {
+    //return 0 เมื่อ save สำเร็จ 1 เมื่อ Fail
     if (!isreadOnly) {
       File file = Chooser.showSaveDialog(FileIOStage);
 
-      if (file != null)
+      if (file != null) {
         if (file.exists()) {
           try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
             fileWriter.write(TextAreaUI.getText());
@@ -184,9 +179,13 @@ public class FileIO {
             e.printStackTrace();
           }
         }
-      ChangeTitle(FileIOStage);
+        ChangeTitle(FileIOStage);
+        return 0;
+      } else {
+        return 1;
+      }
     }
-
+    return 1;
   }
 
   public boolean IsBinaryFile(File F) throws IOException {
