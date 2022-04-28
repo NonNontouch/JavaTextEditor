@@ -91,15 +91,11 @@ public class Main extends Application {
   }
 
   public static void onNew() {
-    ProcessBuilder processBuilder = new ProcessBuilder("run.bat");
+    fileIO.SaveFile();
+    fileIO.ClearText();
+    stage.setTitle("Notepad--");
+    fileIO.ResetText();
     
-    try {
-      Process process = Runtime.getRuntime().exec(
-        "cmd /c run.bat");
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
   }
 
   public static void onOpen() {

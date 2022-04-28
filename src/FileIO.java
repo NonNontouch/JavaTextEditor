@@ -148,6 +148,14 @@ public class FileIO {
     }
   }
 
+  public void ClearText() {
+    TextAreaUI.clear();
+  }
+
+  public void ResetText() {
+    TextControl textControl = new TextControl(FileIOStage, TextAreaUI);
+  }
+
   public void SaveAsFile() {
 
     if (!isreadOnly) {
