@@ -22,6 +22,8 @@ public class FileIO {
   private FileChooser Chooser;
   private Stage FileIOStage;
 
+  private boolean isreadOnly = false;
+
   public FileIO(TextArea tf, Stage primaryStage) {
     FileIOStage = primaryStage;
 
@@ -73,6 +75,8 @@ public class FileIO {
           TextAreaUI.setEditable(true);
 
           saveTextArea.setText(texttoshow.toString());
+          
+          isreadOnly = false;
 
         } catch (Exception e) {
           e.printStackTrace();
@@ -101,8 +105,10 @@ public class FileIO {
 
           alert.setHeaderText(null);
           alert.setTitle("Information");
-          alert.setContentText("This file is read only.");
+          alert.setContentText("This file is read only and it won't be able to saved.");
           alert.show();
+
+          isreadOnly = true;
 
         } catch (Exception e) {
           e.printStackTrace();
@@ -124,7 +130,7 @@ public class FileIO {
   }
 
   public void SaveFile() {
-    if (UserInputFile != null) {
+    if (UserInputFile != null && !isreadOnly) {
       // ถ้าเปิดไฟล์อยู่ก็ให้เซฟทับ
       if (UserInputFile.exists()) {
 
@@ -136,7 +142,7 @@ public class FileIO {
           e.printStackTrace();
         }
       }
-    } else {
+    } else if (!isreadOnly) {
       // ถ้าไม่ก็ให้เด้งไป save as
       SaveAsFile();
     }
@@ -144,32 +150,34 @@ public class FileIO {
 
   public void SaveAsFile() {
 
-    File file = Chooser.showSaveDialog(FileIOStage);
+    if (!isreadOnly) {
+      File file = Chooser.showSaveDialog(FileIOStage);
 
-    if (file != null)
-      if (file.exists()) {
-        try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
-          fileWriter.write(TextAreaUI.getText());
-          UserInputFile = new File(file.getPath());
-          Main.setSavestage(false);
-        } catch (Exception e) {
-          e.printStackTrace();
+      if (file != null)
+        if (file.exists()) {
+          try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
+            fileWriter.write(TextAreaUI.getText());
+            UserInputFile = new File(file.getPath());
+            Main.setSavestage(false);
+          } catch (Exception e) {
+            e.printStackTrace();
 
+          }
+
+        } else {
+          try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8);) {
+            file.createNewFile();
+
+            fileWriter.write(TextAreaUI.getText());
+
+            UserInputFile = new File(file.getPath());
+            Main.setSavestage(false);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
         }
-
-      } else {
-        try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8);) {
-          file.createNewFile();
-
-          fileWriter.write(TextAreaUI.getText());
-
-          UserInputFile = new File(file.getPath());
-          Main.setSavestage(false);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    ChangeTitle(FileIOStage);
+      ChangeTitle(FileIOStage);
+    }
 
   }
 
