@@ -146,7 +146,7 @@ public class TextControl {
         if (textArea.getText() != null) {
             Button findBtn = new Button("Find next");
             TextField findTextArea = new TextField();
-            Label findTextLabel = new Label("Find what: ");
+            Label findTextLabel = new Label("Find Text: ");
             TextFinderLayout.add(findTextLabel, 0, 0);
             TextFinderLayout.add(findTextArea, 1, 0);
             TextFinderLayout.add(findBtn, 0, 1);
