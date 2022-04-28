@@ -154,6 +154,10 @@ public class TextControl {
             ArrayList<Integer> list = new ArrayList<Integer>();
             findTextArea.textProperty().addListener(e -> {
                 String findText = findTextArea.getText();
+                if (findText == null || findText.length() == 0) {
+                    textArea.selectRange(0, 0);
+                    return;
+                }
                 int index = textArea.getText().indexOf(findText);
                 if (index != -1) {
                     textArea.selectRange(index, index + findText.length());
