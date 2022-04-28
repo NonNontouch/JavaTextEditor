@@ -1,9 +1,5 @@
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -12,8 +8,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 public class Main extends Application {
   private static Stage stage;
@@ -78,8 +74,9 @@ public class Main extends Application {
         if (e.equals(donotsavebtn)) {
           stage.close();
         } else if (e.equals(savebtn)) {
-          fileIO.SaveFile();
-          stage.close();
+          if (fileIO.SaveFile() == 0) {
+            stage.close();
+          }
         } else if (e.equals(cancelbtn)) {
           alert.close();
         }
@@ -91,11 +88,12 @@ public class Main extends Application {
   }
 
   public static void onNew() {
-    fileIO.SaveFile();
-    fileIO.ClearText();
-    stage.setTitle("Notepad--");
-    fileIO.ResetText();
-    
+
+    if (fileIO.SaveFile() == 0) {
+      stage.setTitle("Notepad--");
+      ui.getTextArea().clear();
+      ui.getTextArea().setFont(Font.font("System", 16));
+    }
   }
 
   public static void onOpen() {
@@ -135,7 +133,7 @@ public class Main extends Application {
     ui.getTextArea().paste();
   }
 
-  public static void onFind(){
+  public static void onFind() {
     textcontroler.TextFinderEvent();
   }
 
@@ -152,7 +150,6 @@ public class Main extends Application {
     try {
       alertStage.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
     } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     alertStage.show();
