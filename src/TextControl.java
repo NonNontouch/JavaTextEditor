@@ -1,5 +1,6 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -19,7 +21,6 @@ public class TextControl {
 
     private TextArea textArea;
     private TextArea SampleTextArea;
-    private TextArea FindTextArea;
 
     private Stage textStage;
     private GridPane secondaryLayout;
@@ -117,7 +118,7 @@ public class TextControl {
 
     public void TextFinderEvent() {
         TextFinderLayout = new GridPane();
-        
+
         TextFinderLayout.setAlignment(Pos.CENTER);
 
         FindText();
@@ -128,7 +129,6 @@ public class TextControl {
         Stage textcontrolstage = new Stage();
         textcontrolstage.setTitle("Find");
         textcontrolstage.setScene(thirdScene);
-
 
         // ตั้งให้เป็น window ลูก
         textcontrolstage.initOwner(textStage);
@@ -144,19 +144,51 @@ public class TextControl {
 
     private void FindText() {
         if (textArea.getText() != null) {
-            Button findbtn = new Button("Find");
-            Button nextbtn = new Button("Next");
-            Button previousbtn = new Button("previous");
-            TextArea FindArea = new TextArea();
-            FindArea.setPrefSize(100, 20);
-            Label finetextLabel = new Label("Input Your text");
-            FindTextArea = new TextArea();
-            TextFinderLayout.add(finetextLabel, 0, 0);
-            TextFinderLayout.add(FindArea, 1, 0);
-            TextFinderLayout.add(findbtn,0,1);
-            TextFinderLayout.add(nextbtn,1,1);
-            TextFinderLayout.add(previousbtn,2,1);
+            Button findBtn = new Button("Find next");
+            TextField findTextArea = new TextField();
+            Label findTextLabel = new Label("Find what: ");
+            TextFinderLayout.add(findTextLabel, 0, 0);
+            TextFinderLayout.add(findTextArea, 1, 0);
+            TextFinderLayout.add(findBtn, 0, 1);
 
+            ArrayList<Integer> list = new ArrayList<Integer>();
+            findTextArea.textProperty().addListener(e -> {
+                String findText = findTextArea.getText();
+                if (findText == null || findText.length() == 0) {
+                    textArea.selectRange(0, 0);
+                    return;
+                }
+                int index = textArea.getText().indexOf(findText);
+                if (index != -1) {
+                    textArea.selectRange(index, index + findText.length());
+                } else {
+                    textArea.selectRange(0, 0);
+                }
+
+                list.clear();
+                while (index >= 0) {
+                    list.add(index);
+                    index = textArea.getText().indexOf(findText, index + 1);
+                }
+            });
+
+            findBtn.setOnAction(e -> {
+
+                String findtext = findTextArea.getText();
+                int index = textArea.getText().indexOf(findtext, textArea.getCaretPosition());
+                if (index == -1) {
+                    index = textArea.getText().indexOf(findtext);
+                }
+                if (index != -1) {
+                    textArea.selectRange(index, index + findtext.length());
+                } else {
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Find");
+                    alert.setHeaderText("Not Found");
+                    alert.setContentText("Not Found");
+                    alert.showAndWait();
+                }
+            });
 
         } else {
             Alert alert = new Alert(AlertType.ERROR);
