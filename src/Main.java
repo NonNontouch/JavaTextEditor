@@ -44,13 +44,13 @@ public class Main extends Application {
     primaryStage.show();
     primaryStage.setOnCloseRequest(event -> {
       event.consume();
-      EventBeforeExit(stage);
+      EventBeforeExit();
     });
 
   }
 
-  public static void EventBeforeExit(Stage stage) {
-    if (!ui.getTextArea().getText().equals("") && must_save) {
+  public static void EventBeforeExit() {
+    if (!ui.getTextArea().getText().equals("") && must_save && !fileIO.IsFileEditable()) {
       ButtonType savebtn = new ButtonType("Save");
       ButtonType donotsavebtn = new ButtonType("Don't Save");
       ButtonType cancelbtn = new ButtonType("Cancel");
@@ -72,10 +72,10 @@ public class Main extends Application {
       Optional<ButtonType> userinput = alert.showAndWait();
       userinput.ifPresent(e -> {
         if (e.equals(donotsavebtn)) {
-          stage.close();
+          System.exit(0);
         } else if (e.equals(savebtn)) {
           if (fileIO.SaveFile() == 0) {
-            stage.close();
+            System.exit(0);
           }
         } else if (e.equals(cancelbtn)) {
           alert.close();
@@ -83,7 +83,7 @@ public class Main extends Application {
       });
 
     } else {
-      stage.close();
+      System.exit(0);
     }
   }
 
@@ -110,7 +110,7 @@ public class Main extends Application {
   }
 
   public static void onExit() {
-    EventBeforeExit(stage);
+    EventBeforeExit();
   }
 
   public static void onUndo() {
@@ -138,7 +138,7 @@ public class Main extends Application {
   }
 
   public static void onAbout() {
-    Stage alertStage = new Stage();
+    Stage alertStage;
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setHeaderText(null);
     alert.setTitle("About");
