@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.nio.file.Files;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -102,7 +105,9 @@ public class FileIO {
 
           TextAreaUI.setText(texttoshow.toString());
           TextAreaUI.setEditable(false);
-
+          Stage alertStage = new Stage();
+          alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+          alertStage.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
           alert.setHeaderText(null);
           alert.setTitle("Information");
           alert.setContentText("This file is read only and it won't be able to saved.");
@@ -115,10 +120,17 @@ public class FileIO {
         }
       } else if (isuserinputnontextfile) {
         // เปิดไฟล์ Binary ขึ้นมาแจ้งผู้ใช้ว่ามันเปิดไม่ได้
+        Stage alertStage = new Stage();
         Alert alert = new Alert(AlertType.ERROR);
+        alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
         alert.setHeaderText(null);
         alert.setTitle("Error");
         alert.setContentText("This program can't open Binary file.");
+        try {
+          alertStage.getIcons().add(new Image(new FileInputStream("Picture/Error.png")));
+        } catch (FileNotFoundException e) {
+          e.printStackTrace();
+        }
         alert.show();
       }
 
@@ -130,7 +142,7 @@ public class FileIO {
   }
 
   public short SaveFile() {
-     //return 0 เมื่อ save สำเร็จ 1 เมื่อ Fail
+    // return 0 เมื่อ save สำเร็จ 1 เมื่อ Fail
     if (UserInputFile != null && !isreadOnly) {
       // ถ้าเปิดไฟล์อยู่ก็ให้เซฟทับ
       if (UserInputFile.exists()) {
@@ -152,7 +164,7 @@ public class FileIO {
   }
 
   public short SaveAsFile() {
-    //return 0 เมื่อ save สำเร็จ 1 เมื่อ Fail
+    // return 0 เมื่อ save สำเร็จ 1 เมื่อ Fail
     if (!isreadOnly) {
       File file = Chooser.showSaveDialog(FileIOStage);
 
