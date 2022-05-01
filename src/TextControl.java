@@ -117,86 +117,97 @@ public class TextControl {
     }
 
     public void TextFinderEvent() {
-        TextFinderLayout = new GridPane();
 
-        TextFinderLayout.setAlignment(Pos.CENTER);
+        if (!textArea.getText().equals("")) {
+            TextFinderLayout = new GridPane();
 
-        FindText();
+            TextFinderLayout.setAlignment(Pos.CENTER);
+            FindText();
+            Scene thirdScene = new Scene(TextFinderLayout, 300, 140);
 
-        Scene thirdScene = new Scene(TextFinderLayout, 550, 340);
+            // สร้าง stage ใหม่
+            Stage textcontrolstage = new Stage();
+            textcontrolstage.setTitle("Find");
+            textcontrolstage.setScene(thirdScene);
+            try {
+                textcontrolstage.getIcons().add(new Image(new FileInputStream("Picture/Icon.png")));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 
-        // สร้าง stage ใหม่
-        Stage textcontrolstage = new Stage();
-        textcontrolstage.setTitle("Find");
-        textcontrolstage.setScene(thirdScene);
+            // ตั้งให้เป็น window ลูก
+            textcontrolstage.initOwner(textStage);
 
-        // ตั้งให้เป็น window ลูก
-        textcontrolstage.initOwner(textStage);
+            // เซทตำแหน่งให้อยู่ซ้ายบนเสมอ
+            textcontrolstage.setX(textStage.getX());
+            textcontrolstage.setY(textStage.getY());
 
-        // เซทตำแหน่งให้อยู่ซ้ายบนเสมอ
-        textcontrolstage.setX(textStage.getX());
-        textcontrolstage.setY(textStage.getY());
+            textcontrolstage.setResizable(false);
 
-        textcontrolstage.setResizable(false);
+            textcontrolstage.show();
+        } else {
+            Stage alertStage;
+            Alert alert = new Alert(AlertType.ERROR);
+            alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            try {
+                alertStage.getIcons().add(new Image(new FileInputStream("Picture/Error.png")));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            alert.setHeaderText(null);
+            alert.setTitle("Error");
+            alert.setContentText("Your TextArea is empty");
+            alert.show();
+        }
 
-        textcontrolstage.show();
     }
 
     private void FindText() {
-        if (textArea.getText() != null) {
-            Button findBtn = new Button("Find next");
-            TextField findTextArea = new TextField();
-            Label findTextLabel = new Label("Find Text: ");
-            TextFinderLayout.add(findTextLabel, 0, 0);
-            TextFinderLayout.add(findTextArea, 1, 0);
-            TextFinderLayout.add(findBtn, 0, 1);
+        Button findBtn = new Button("Find next");
+        TextField findTextArea = new TextField();
+        Label findTextLabel = new Label("Find Text: ");
+        TextFinderLayout.add(findTextLabel, 0, 0);
+        TextFinderLayout.add(findTextArea, 1, 0);
+        TextFinderLayout.add(findBtn, 0, 1);
 
-            ArrayList<Integer> list = new ArrayList<Integer>();
-            findTextArea.textProperty().addListener(e -> {
-                String findText = findTextArea.getText();
-                if (findText == null || findText.length() == 0) {
-                    textArea.selectRange(0, 0);
-                    return;
-                }
-                int index = textArea.getText().indexOf(findText);
-                if (index != -1) {
-                    textArea.selectRange(index, index + findText.length());
-                } else {
-                    textArea.selectRange(0, 0);
-                }
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        findTextArea.textProperty().addListener(e -> {
+            String findText = findTextArea.getText();
+            if (findText == null || findText.length() == 0) {
+                textArea.selectRange(0, 0);
+                return;
+            }
+            int index = textArea.getText().indexOf(findText);
+            if (index != -1) {
+                textArea.selectRange(index, index + findText.length());
+            } else {
+                textArea.selectRange(0, 0);
+            }
 
-                list.clear();
-                while (index >= 0) {
-                    list.add(index);
-                    index = textArea.getText().indexOf(findText, index + 1);
-                }
-            });
+            list.clear();
+            while (index >= 0) {
+                list.add(index);
+                index = textArea.getText().indexOf(findText, index + 1);
+            }
+        });
 
-            findBtn.setOnAction(e -> {
+        findBtn.setOnAction(e -> {
 
-                String findtext = findTextArea.getText();
-                int index = textArea.getText().indexOf(findtext, textArea.getCaretPosition());
-                if (index == -1) {
-                    index = textArea.getText().indexOf(findtext);
-                }
-                if (index != -1) {
-                    textArea.selectRange(index, index + findtext.length());
-                } else {
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("Find");
-                    alert.setHeaderText("Not Found");
-                    alert.setContentText("Not Found");
-                    alert.showAndWait();
-                }
-            });
+            String findtext = findTextArea.getText();
+            int index = textArea.getText().indexOf(findtext, textArea.getCaretPosition());
+            if (index == -1) {
+                index = textArea.getText().indexOf(findtext);
+            }
+            if (index != -1) {
+                textArea.selectRange(index, index + findtext.length());
+            } else {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Find");
+                alert.setHeaderText("Text Not Found");
+                alert.showAndWait();
+            }
+        });
 
-        } else {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Error");
-            alert.setContentText("Your TextArea is null");
-            alert.show();
-        }
     }
 
 }
