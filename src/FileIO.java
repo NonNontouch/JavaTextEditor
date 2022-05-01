@@ -47,7 +47,6 @@ public class FileIO {
     UserInputFile = Chooser.showOpenDialog(FileIOStage);
 
     if (UserInputFile != null) {
-
       boolean isuserinputnontextfile;
       try {
         isuserinputnontextfile = IsBinaryFile(UserInputFile);
@@ -80,6 +79,9 @@ public class FileIO {
           saveTextArea.setText(texttoshow.toString());
 
           isreadOnly = false;
+
+          Main.setSavestage(false);
+          ChangeTitle(FileIOStage);
 
         } catch (Exception e) {
           e.printStackTrace();
@@ -115,6 +117,9 @@ public class FileIO {
 
           isreadOnly = true;
 
+          Main.setSavestage(false);
+          ChangeTitle(FileIOStage);
+
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -125,7 +130,7 @@ public class FileIO {
         alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
         alert.setHeaderText(null);
         alert.setTitle("Error");
-        alert.setContentText("This program can't open Binary file.");
+        alert.setContentText("This program can't open this file.");
         try {
           alertStage.getIcons().add(new Image(new FileInputStream("Picture/Error.png")));
         } catch (FileNotFoundException e) {
@@ -136,8 +141,8 @@ public class FileIO {
 
       // เมื่อ user กด open อีกรอบจะเป็น directory ที่อยู่ล่าสุด
       Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
-      Main.setSavestage(false);
-      ChangeTitle(FileIOStage);
+
+
     }
   }
 
@@ -221,11 +226,7 @@ public class FileIO {
     }
   }
 
-  public TextArea getSaveTextArea() {
-    return saveTextArea;
-  }
-
-  public File getuserinputfile() {
-    return UserInputFile;
+  public boolean IsFileEditable() {
+    return isreadOnly;
   }
 }
