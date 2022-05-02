@@ -142,7 +142,6 @@ public class FileIO {
       // เมื่อ user กด open อีกรอบจะเป็น directory ที่อยู่ล่าสุด
       Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
 
-
     }
   }
 
@@ -208,7 +207,14 @@ public class FileIO {
   public boolean IsBinaryFile(File F) throws IOException {
 
     String type = Files.probeContentType(F.toPath());
-    if (type == null) {
+    String Filename = F.getName();
+    System.out.println(Filename + "   " + type);
+    if (Filename.endsWith(".cpp") || Filename.endsWith(".asm")
+        || Filename.endsWith(".rb") || Filename.endsWith(".kt")
+        || Filename.endsWith(".rs") || Filename.endsWith(".cs")
+        || Filename.endsWith(".go")) {
+      return false;
+    } else if (type == null) {
       // เป็นอะไรก็ไม่รู้ถือว่าเป็น Birnary เลย
       return true;
     } else if (type.startsWith("text")) {
