@@ -155,6 +155,28 @@ public class Main extends Application {
     alertStage.show();
   }
 
+  public static void onHowto(){
+    Stage alertStage;
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setHeaderText(null);
+    alert.setTitle("วิธีใช้");
+    alert.setContentText(
+        "1.การเปิดไฟล์\n  - notepad-- สามารถเปิดไฟล์ Code .asm .cpp .c .cs .go .html .java .js .kt .php .py .rb .rs เเละไฟล์เอกสาร .txt\n  - สามารถทำได้โดยเข้าไปที่เมนู File -> Open\n"+
+        "2.การบันทึกไฟล์\n  - สามารถทำได้โดยการกดที่เมนู File -> Save,Save as\n  - ใช้ shortcut ในการบันทึก \"CTRL + s\"\n"+
+        "3.การใช้คำสั่งเมนู Edit\n  - การใช้เมนูคำสั่ง Undo หรือใช้ \"CTRL + z\" ในการเลิกทำสิ่งที่ทำ\n  - การใช้เมนูคำสั่ง Redo หรือใช้ \"CTRL + y\" ในการทำซ้ำสิ่งที่ทำ\n  - การใช้เมนูคำสั่ง Cut หรือใช้ \"CTRL + x\"  ในการตัดข้อความ\n  - การใช้เมนูคำสั่ง Copy หรือใช้ \"CTRL + c\"  ในการคัดลอกข้อความ\n  - การใช้เมนูคำสั่ง Paste หรือใช้ \"CTRL + v\"  ในการวางข้อความ\n  - การใช้เมนูคำสั่ง Find หรือใช้ \"CTRL + f\"  ในการค้นหาข้อความ\n"+
+        "4.การเปลี่ยน Font เเละขนาดของตัวอักษร\n  - ทำได้จากเเถบเมนู Format -> Edit Format หรือใช้ \"CTRL + t\"\n  - เมื่อเข้าสู่ Edit Format จะเห็นเมนู Font Size ที่ใช้ในการปรับขนาดของตัวอักษรเเละ Font Family ใช้ในการเปลี่ยนรูปเเบบของ font\n"+
+        "5.ทางลัดในการใช้ Notepad--\n  - \"CTRL + s\" => Save\n  - \"CTRL + z\" => Undo\n  - \"CTRL + y\" => Redo\n  - \"CTRL + x\" => Cut\n  - \"CTRL + c\" => Copy\n  - \"CTRL + v\" => Paste\n  - \"CTRL + f\" => Find\n  - \"CTRL + n\" => New\n  - \"CTRL + t\" =>Font edit");
+
+    alert.getDialogPane().setStyle("-fx-font-size: 10;");
+    alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+    try {
+      alertStage.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+    alertStage.show();
+  }
+
   public static void onHelp() {
     System.out.println("Help");
   }
