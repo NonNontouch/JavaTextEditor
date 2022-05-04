@@ -3,11 +3,16 @@ import java.io.FileNotFoundException;
 import java.util.Optional;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -41,6 +46,7 @@ public class Main extends Application {
     } catch (FileNotFoundException e1) {
       e1.printStackTrace();
     }
+    setShortCutKey(primaryStage);
     primaryStage.show();
     primaryStage.setOnCloseRequest(event -> {
       event.consume();
@@ -85,6 +91,28 @@ public class Main extends Application {
     } else {
       System.exit(0);
     }
+  }
+
+  private void setShortCutKey(Stage stage) {
+    stage.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+      final KeyCombination save = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+      final KeyCombination inew = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
+      final KeyCombination font = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
+      final KeyCombination find = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
+
+      public void handle(KeyEvent ke) {
+        if (save.match(ke)) {
+          fileIO.SaveFile();
+          ke.consume();
+        } else if (inew.match(ke)) {
+          onNew();
+        } else if (font.match(ke)) {
+          textcontroler.TextControlEvent();
+        } else if (find.match(ke)) {
+          textcontroler.TextFinderEvent();
+        }
+      }
+    });
   }
 
   public static void onNew() {
