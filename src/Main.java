@@ -106,10 +106,13 @@ public class Main extends Application {
           ke.consume();
         } else if (inew.match(ke)) {
           onNew();
+          ke.consume();
         } else if (font.match(ke)) {
           textcontroler.TextControlEvent();
+          ke.consume();
         } else if (find.match(ke)) {
           textcontroler.TextFinderEvent();
+          ke.consume();
         }
       }
     });
@@ -122,7 +125,7 @@ public class Main extends Application {
       ui.getTextArea().clear();
       ui.getTextArea().setFont(Font.font("System", 16));
     }
-  }
+ }
 
   public static void onOpen() {
     fileIO.OpenFile();
