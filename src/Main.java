@@ -186,7 +186,7 @@ public class Main extends Application {
     alertStage.show();
   }
 
-  public static void onHowto(){
+  public static void onHelp(){
     Stage alertStage;
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setHeaderText(null);
@@ -198,7 +198,7 @@ public class Main extends Application {
         "4.การเปลี่ยน Font เเละขนาดของตัวอักษร\n  - ทำได้จากเเถบเมนู Format -> Edit Format หรือใช้ \"CTRL + t\"\n  - เมื่อเข้าสู่ Edit Format จะเห็นเมนู Font Size ที่ใช้ในการปรับขนาดของตัวอักษรเเละ Font Family ใช้ในการเปลี่ยนรูปเเบบของ font\n"+
         "5.ทางลัดในการใช้ Notepad--\n  - \"CTRL + s\" => Save\n  - \"CTRL + z\" => Undo\n  - \"CTRL + y\" => Redo\n  - \"CTRL + x\" => Cut\n  - \"CTRL + c\" => Copy\n  - \"CTRL + v\" => Paste\n  - \"CTRL + f\" => Find\n  - \"CTRL + n\" => New\n  - \"CTRL + t\" =>Font edit");
 
-    alert.getDialogPane().setStyle("-fx-font-size: 10;");
+    alert.getDialogPane().setStyle("-fx-font-size: 12;");
     alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
     try {
       alertStage.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
@@ -208,9 +208,6 @@ public class Main extends Application {
     alertStage.show();
   }
 
-  public static void onHelp() {
-    System.out.println("Help");
-  }
 
   public static void onFormat() {
 

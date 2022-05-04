@@ -64,8 +64,8 @@ public class UI extends BorderPane {
     MenuItem iAbout = new MenuItem("About");
     iAbout.setOnAction(e -> Main.onAbout());
 
-    MenuItem iHowto = new MenuItem("วิธีใช้");
-    iHowto.setOnAction(e -> Main.onHowto());
+    MenuItem iHowto = new MenuItem("Help");
+    iHowto.setOnAction(e -> Main.onHelp());
 
     final Menu helpMenu = new Menu("Help", null, iAbout,iHowto);
 
