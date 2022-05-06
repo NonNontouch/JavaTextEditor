@@ -201,10 +201,20 @@ public class TextControl {
             if (index != -1) {
                 textArea.selectRange(index, index + findtext.length());
             } else {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Find");
-                alert.setHeaderText("Text Not Found");
-                alert.showAndWait();
+                Stage alertStage;
+            Alert alert = new Alert(AlertType.ERROR);
+            alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            
+                try {
+                    alertStage.getIcons().add(new Image(new FileInputStream("Picture/Error.png")));
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+                }
+            
+            alert.setHeaderText(null);
+            alert.setTitle("Error");
+            alert.setContentText("Text not found");
+            alert.show();
             }
         });
 

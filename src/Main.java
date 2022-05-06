@@ -61,9 +61,9 @@ public class Main extends Application {
       ButtonType donotsavebtn = new ButtonType("Don't Save");
       ButtonType cancelbtn = new ButtonType("Cancel");
       Alert alert = new Alert(AlertType.CONFIRMATION);
-      alert.setTitle("Alert");
-      alert.setHeaderText("You're about to exit");
-      alert.setContentText("Do you want to save your file before exit");
+      alert.setTitle("Notepad--");
+      alert.setHeaderText("You're about to exit.");
+      alert.setContentText("Do you want to save your file before exit?");
       alert.getButtonTypes().clear();
       alert.getButtonTypes().addAll(savebtn, donotsavebtn, cancelbtn);
 
