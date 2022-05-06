@@ -208,7 +208,6 @@ public class FileIO {
 
     String type = Files.probeContentType(F.toPath());
     String Filename = F.getName();
-    System.out.println(Filename + "   " + type);
     if (Filename.endsWith(".cpp") || Filename.endsWith(".asm")
         || Filename.endsWith(".rb") || Filename.endsWith(".kt")
         || Filename.endsWith(".rs") || Filename.endsWith(".cs")
