@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -109,7 +107,7 @@ public class FileIO {
           TextAreaUI.setEditable(false);
           Stage alertStage = new Stage();
           alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-          alertStage.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
+          alertStage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Information.png")));
           alert.setHeaderText(null);
           alert.setTitle("Information");
           alert.setContentText("This file is read only and it won't be able to saved.");
@@ -131,11 +129,7 @@ public class FileIO {
         alert.setHeaderText(null);
         alert.setTitle("Error");
         alert.setContentText("This program can't open this file.");
-        try {
-          alertStage.getIcons().add(new Image(new FileInputStream("Picture/Error.png")));
-        } catch (FileNotFoundException e) {
-          e.printStackTrace();
-        }
+        alertStage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Error.png")));
         alert.show();
       }
 

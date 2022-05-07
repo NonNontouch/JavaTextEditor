@@ -1,5 +1,3 @@
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javafx.geometry.Pos;
@@ -52,11 +50,7 @@ public class TextControl {
         Stage textcontrolstage = new Stage();
         textcontrolstage.setTitle("Font");
         textcontrolstage.setScene(secondScene);
-        try {
-            textcontrolstage.getIcons().add(new Image(new FileInputStream("Picture/Icon.png")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        textcontrolstage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Icon.png")));
 
         // ตั้งให้ว่าถ้าไม่ปิดwindow นี้ก็จะทำอะไรไม่ได้
         textcontrolstage.initModality(Modality.WINDOW_MODAL);
@@ -129,11 +123,7 @@ public class TextControl {
             Stage textcontrolstage = new Stage();
             textcontrolstage.setTitle("Find");
             textcontrolstage.setScene(thirdScene);
-            try {
-                textcontrolstage.getIcons().add(new Image(new FileInputStream("Picture/Icon.png")));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            textcontrolstage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Icon.png")));
 
             // ตั้งให้เป็น window ลูก
             textcontrolstage.initOwner(textStage);
@@ -149,11 +139,7 @@ public class TextControl {
             Stage alertStage;
             Alert alert = new Alert(AlertType.ERROR);
             alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-            try {
-                alertStage.getIcons().add(new Image(new FileInputStream("Picture/Error.png")));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            alertStage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Error.png")));
             alert.setHeaderText(null);
             alert.setTitle("Error");
             alert.setContentText("Your TextArea is empty");
@@ -205,11 +191,7 @@ public class TextControl {
             Alert alert = new Alert(AlertType.ERROR);
             alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
             
-                try {
-                    alertStage.getIcons().add(new Image(new FileInputStream("Picture/Error.png")));
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                }
+            alertStage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Error.png")));
             
             alert.setHeaderText(null);
             alert.setTitle("Error");

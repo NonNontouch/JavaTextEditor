@@ -1,4 +1,1 @@
-
-.vscode/launch.json
-.vscode/setting.json
-bin/*.class
+/bin/

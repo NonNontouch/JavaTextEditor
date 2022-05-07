@@ -42,8 +42,8 @@ public class Main extends Application {
     primaryStage.setScene(scene);
     primaryStage.setTitle("Notepad--");
     try {
-      primaryStage.getIcons().add(new Image(new FileInputStream("Picture/Icon.png")));
-    } catch (FileNotFoundException e1) {
+      primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Icon.png")));
+    } catch (Exception e1) {
       e1.printStackTrace();
     }
     setShortCutKey(primaryStage);
@@ -133,8 +133,8 @@ public class Main extends Application {
       Stage window = (Stage) alert.getDialogPane().getScene().getWindow();
       window.setOnCloseRequest(e -> alert.close());
       try {
-        window.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
-      } catch (FileNotFoundException e1) {
+        window.getIcons().add(new Image(Main.class.getResourceAsStream("Picture/Information.png")));
+      } catch (Exception e1) {
         e1.printStackTrace();
       }
       Optional<ButtonType> userinput = alert.showAndWait();
@@ -177,8 +177,8 @@ public class Main extends Application {
       Stage window = (Stage) alert.getDialogPane().getScene().getWindow();
       window.setOnCloseRequest(e -> alert.close());
       try {
-        window.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
-      } catch (FileNotFoundException e1) {
+        window.getIcons().add(new Image(Main.class.getResourceAsStream("Picture/Information.png")));
+      } catch (Exception e1) {
         e1.printStackTrace();
       }
       Optional<ButtonType> userinput = alert.showAndWait();
@@ -247,8 +247,8 @@ public class Main extends Application {
     alert.getDialogPane().setStyle("-fx-font-size: 15;");
     alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
     try {
-      alertStage.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
-    } catch (FileNotFoundException e) {
+      alertStage.getIcons().add(new Image(Main.class.getResourceAsStream("Picture/Information.png")));
+    } catch (Exception e) {
       e.printStackTrace();
     }
     alertStage.show();
@@ -273,8 +273,8 @@ public class Main extends Application {
     alert.getDialogPane().setStyle("-fx-font-size: 12;");
     alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
     try {
-      alertStage.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
-    } catch (FileNotFoundException e) {
+      alertStage.getIcons().add(new Image(Main.class.getResourceAsStream("Picture/Information.png")));
+    } catch (Exception e) {
       e.printStackTrace();
     }
     alertStage.show();

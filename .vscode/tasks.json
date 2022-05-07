@@ -1,0 +1,22 @@
+{
+  // Press Ctrl+Shift+B to build jar
+	"version": "2.0.0",
+	"tasks": [
+    {
+      "type": "java",
+      "targetPath": "${workspaceFolder}/Notepad--.jar",
+      "mainClass": "Launcher",
+      "elements": [
+        "${compileOutput}",
+        "${dependencies}",
+        "lib/javafx/bin"
+      ],
+      "problemMatcher": [],
+      "label": "java: exportjar:Notepad--",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
