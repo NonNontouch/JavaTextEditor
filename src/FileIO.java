@@ -196,6 +196,7 @@ public class FileIO {
           }
         }
         ChangeTitle(FileIOStage);
+        Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
         return 0;
       } else {
         return 1;

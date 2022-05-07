@@ -119,16 +119,84 @@ public class Main extends Application {
   }
 
   public static void onNew() {
+    if (must_save) {
+      ButtonType savebtn = new ButtonType("Save");
+      ButtonType donotsavebtn = new ButtonType("Don't Save");
+      ButtonType cancelbtn = new ButtonType("Cancel");
+      Alert alert = new Alert(AlertType.CONFIRMATION);
+      alert.setTitle("Notepad--");
+      alert.setHeaderText("You're about to create a new file.");
+      alert.setContentText("Do you want to save your file before create a new file?");
+      alert.getButtonTypes().clear();
+      alert.getButtonTypes().addAll(savebtn, donotsavebtn, cancelbtn);
 
-    if (fileIO.SaveFile() == 0) {
+      Stage window = (Stage) alert.getDialogPane().getScene().getWindow();
+      window.setOnCloseRequest(e -> alert.close());
+      try {
+        window.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
+      } catch (FileNotFoundException e1) {
+        e1.printStackTrace();
+      }
+      Optional<ButtonType> userinput = alert.showAndWait();
+      userinput.ifPresent(e -> {
+        if (e.equals(donotsavebtn)) {
+          stage.setTitle("Notepad--");
+          ui.getTextArea().clear();
+          ui.getTextArea().setFont(Font.font("System", 16));
+        } else if (e.equals(savebtn)) {
+          if (fileIO.SaveFile() == 0) {
+            stage.setTitle("Notepad--");
+            ui.getTextArea().clear();
+            ui.getTextArea().setFont(Font.font("System", 16));
+          }
+        } else if (e.equals(cancelbtn)) {
+          alert.close();
+        }
+      });
+
+    } else {
       stage.setTitle("Notepad--");
       ui.getTextArea().clear();
       ui.getTextArea().setFont(Font.font("System", 16));
     }
- }
+
+  }
 
   public static void onOpen() {
-    fileIO.OpenFile();
+    if (must_save) {
+      ButtonType savebtn = new ButtonType("Save");
+      ButtonType donotsavebtn = new ButtonType("Don't Save");
+      ButtonType cancelbtn = new ButtonType("Cancel");
+      Alert alert = new Alert(AlertType.CONFIRMATION);
+      alert.setTitle("Notepad--");
+      alert.setHeaderText("You're about to open a new file.");
+      alert.setContentText("Do you want to save your file before open a new file?");
+      alert.getButtonTypes().clear();
+      alert.getButtonTypes().addAll(savebtn, donotsavebtn, cancelbtn);
+
+      Stage window = (Stage) alert.getDialogPane().getScene().getWindow();
+      window.setOnCloseRequest(e -> alert.close());
+      try {
+        window.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
+      } catch (FileNotFoundException e1) {
+        e1.printStackTrace();
+      }
+      Optional<ButtonType> userinput = alert.showAndWait();
+      userinput.ifPresent(e -> {
+        if (e.equals(donotsavebtn)) {
+          fileIO.OpenFile();
+        } else if (e.equals(savebtn)) {
+          if (fileIO.SaveFile() == 0) {
+            fileIO.OpenFile();
+          }
+        } else if (e.equals(cancelbtn)) {
+          alert.close();
+        }
+      });
+
+    } else {
+      fileIO.OpenFile();
+    }
   }
 
   public static void onSave() {
@@ -186,17 +254,21 @@ public class Main extends Application {
     alertStage.show();
   }
 
-  public static void onHelp(){
+  public static void onHelp() {
     Stage alertStage;
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setHeaderText(null);
     alert.setTitle("วิธีใช้");
     alert.setContentText(
-        "1.การเปิดไฟล์\n  - notepad-- สามารถเปิดไฟล์ Code .asm .cpp .c .cs .go .html .java .js .kt .php .py .rb .rs เเละไฟล์เอกสาร .txt\n  - สามารถทำได้โดยเข้าไปที่เมนู File -> Open\n"+
-        "2.การบันทึกไฟล์\n  - สามารถทำได้โดยการกดที่เมนู File -> Save,Save as\n  - ใช้ shortcut ในการบันทึก \"CTRL + s\"\n"+
-        "3.การใช้คำสั่งเมนู Edit\n  - การใช้เมนูคำสั่ง Undo หรือใช้ \"CTRL + z\" ในการเลิกทำสิ่งที่ทำ\n  - การใช้เมนูคำสั่ง Redo หรือใช้ \"CTRL + y\" ในการทำซ้ำสิ่งที่ทำ\n  - การใช้เมนูคำสั่ง Cut หรือใช้ \"CTRL + x\"  ในการตัดข้อความ\n  - การใช้เมนูคำสั่ง Copy หรือใช้ \"CTRL + c\"  ในการคัดลอกข้อความ\n  - การใช้เมนูคำสั่ง Paste หรือใช้ \"CTRL + v\"  ในการวางข้อความ\n  - การใช้เมนูคำสั่ง Find หรือใช้ \"CTRL + f\"  ในการค้นหาข้อความ\n"+
-        "4.การเปลี่ยน Font เเละขนาดของตัวอักษร\n  - ทำได้จากเเถบเมนู Format -> Edit Format หรือใช้ \"CTRL + t\"\n  - เมื่อเข้าสู่ Edit Format จะเห็นเมนู Font Size ที่ใช้ในการปรับขนาดของตัวอักษรเเละ Font Family ใช้ในการเปลี่ยนรูปเเบบของ font\n"+
-        "5.ทางลัดในการใช้ Notepad--\n  - \"CTRL + s\" => Save\n  - \"CTRL + z\" => Undo\n  - \"CTRL + y\" => Redo\n  - \"CTRL + x\" => Cut\n  - \"CTRL + c\" => Copy\n  - \"CTRL + v\" => Paste\n  - \"CTRL + f\" => Find\n  - \"CTRL + n\" => New\n  - \"CTRL + t\" =>Font edit");
+        "1.การเปิดไฟล์\n  - notepad-- สามารถเปิดไฟล์ Code .asm .cpp .c .cs .go .html .java .js .kt .php .py .rb .rs เเละไฟล์เอกสาร .txt\n  - สามารถทำได้โดยเข้าไปที่เมนู File -> Open\n"
+            +
+            "2.การบันทึกไฟล์\n  - สามารถทำได้โดยการกดที่เมนู File -> Save,Save as\n  - ใช้ shortcut ในการบันทึก \"CTRL + s\"\n"
+            +
+            "3.การใช้คำสั่งเมนู Edit\n  - การใช้เมนูคำสั่ง Undo หรือใช้ \"CTRL + z\" ในการเลิกทำสิ่งที่ทำ\n  - การใช้เมนูคำสั่ง Redo หรือใช้ \"CTRL + y\" ในการทำซ้ำสิ่งที่ทำ\n  - การใช้เมนูคำสั่ง Cut หรือใช้ \"CTRL + x\"  ในการตัดข้อความ\n  - การใช้เมนูคำสั่ง Copy หรือใช้ \"CTRL + c\"  ในการคัดลอกข้อความ\n  - การใช้เมนูคำสั่ง Paste หรือใช้ \"CTRL + v\"  ในการวางข้อความ\n  - การใช้เมนูคำสั่ง Find หรือใช้ \"CTRL + f\"  ในการค้นหาข้อความ\n"
+            +
+            "4.การเปลี่ยน Font เเละขนาดของตัวอักษร\n  - ทำได้จากเเถบเมนู Format -> Edit Format หรือใช้ \"CTRL + t\"\n  - เมื่อเข้าสู่ Edit Format จะเห็นเมนู Font Size ที่ใช้ในการปรับขนาดของตัวอักษรเเละ Font Family ใช้ในการเปลี่ยนรูปเเบบของ font\n"
+            +
+            "5.ทางลัดในการใช้ Notepad--\n  - \"CTRL + s\" => Save\n  - \"CTRL + z\" => Undo\n  - \"CTRL + y\" => Redo\n  - \"CTRL + x\" => Cut\n  - \"CTRL + c\" => Copy\n  - \"CTRL + v\" => Paste\n  - \"CTRL + f\" => Find\n  - \"CTRL + n\" => New\n  - \"CTRL + t\" =>Font edit");
 
     alert.getDialogPane().setStyle("-fx-font-size: 12;");
     alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -207,7 +279,6 @@ public class Main extends Application {
     }
     alertStage.show();
   }
-
 
   public static void onFormat() {
 
