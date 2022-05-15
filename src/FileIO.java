@@ -88,7 +88,7 @@ public class FileIO {
 
     } else {
       // ไฟล์เปิดอ่านได้แต่เขียนไม่ได้
-
+      TextAreaUI.setEditable(false);
       Alert alert = new Alert(AlertType.INFORMATION);
       Stage alertStage = new Stage();
       alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
@@ -111,7 +111,7 @@ public class FileIO {
   public short SaveFile() {
     // return 0 เมื่อ save สำเร็จ 1 เมื่อ Fail
     if (isreadOnly) {
-      return SaveAsFile();
+      return 1;
     }
     if (UserInputFile == null) {
       // ไม่ได้เปิดไฟล์เด้งไป save as
@@ -135,7 +135,9 @@ public class FileIO {
 
   public short SaveAsFile() {
     // return 0 เมื่อ save สำเร็จ 1 เมื่อ Fail
-
+    if (isreadOnly) {
+      return 1;
+    }
     File file = Chooser.showSaveDialog(PrimaryStage);
 
     if (file == null) {
