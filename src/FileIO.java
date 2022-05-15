@@ -16,17 +16,16 @@ import javafx.stage.Stage;
 public class FileIO {
 
   private TextArea TextAreaUI;
-  private TextArea saveTextArea;
 
   private File UserInputFile;
 
   private FileChooser Chooser;
-  private Stage FileIOStage;
+  private Stage PrimaryStage;
 
   private boolean isreadOnly = false;
 
   public FileIO(TextArea tf, Stage primaryStage) {
-    FileIOStage = primaryStage;
+    this.PrimaryStage = primaryStage;
 
     Chooser = new FileChooser();
     FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Document (*.txt)", "*.txt");
@@ -35,168 +34,131 @@ public class FileIO {
     Chooser.getExtensionFilters().add(extFilter2);
 
     TextAreaUI = tf;
-    saveTextArea = new TextArea();
   }
 
   public void OpenFile() {
 
-    StringBuilder texttoshow = new StringBuilder();
+    UserInputFile = Chooser.showOpenDialog(PrimaryStage);
 
-    UserInputFile = Chooser.showOpenDialog(FileIOStage);
-
-    if (UserInputFile != null) {
-      boolean isuserinputnontextfile;
-      try {
-        isuserinputnontextfile = IsBinaryFile(UserInputFile);
-      } catch (IOException e1) {
-        // เปิดไฟล์ไม่ได้ ให้จบการเปิดไฟล์เลย
-        e1.printStackTrace();
-        return;
-      }
-
-      if (UserInputFile.canRead() && UserInputFile.canWrite() && !isuserinputnontextfile) {
-        // ไฟล์สามารถเปิดอ่านและเขียนได้
-        try (
-
-            FileReader Reader = new FileReader(UserInputFile, StandardCharsets.UTF_8);
-            BufferedReader bf = new BufferedReader(Reader);) {
-
-          String temp = bf.readLine();
-
-          while (temp != null) {
-
-            texttoshow.append(temp);
-            texttoshow.append(System.lineSeparator());
-            temp = bf.readLine();
-
-          }
-
-          TextAreaUI.setText(texttoshow.toString());
-          TextAreaUI.setEditable(true);
-
-          saveTextArea.setText(texttoshow.toString());
-
-          isreadOnly = false;
-
-          Main.setSavestage(false);
-          ChangeTitle(FileIOStage);
-
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-
-      } else if (UserInputFile.canRead() && !UserInputFile.canWrite() && !isuserinputnontextfile) {
-        // ไฟล์เปิดอ่านได้แต่เขียนไม่ได้
-
-        try (
-
-            FileReader Reader = new FileReader(UserInputFile, StandardCharsets.UTF_8);
-            BufferedReader bf = new BufferedReader(Reader);) {
-
-          String temp = bf.readLine();
-          Alert alert = new Alert(AlertType.INFORMATION);
-          while (temp != null) {
-            // loop อ่านซ้ำจนกว่าจะเป็น null(ถึงตัวสุดท้าย)
-            texttoshow.append(temp);
-            texttoshow.append(System.lineSeparator());
-            temp = bf.readLine();
-
-          }
-
-          TextAreaUI.setText(texttoshow.toString());
-          TextAreaUI.setEditable(false);
-          Stage alertStage = new Stage();
-          alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-          alertStage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Information.png")));
-          alert.setHeaderText(null);
-          alert.setTitle("Information");
-          alert.setContentText("This file is read only and it won't be able to saved.");
-          alert.show();
-
-          isreadOnly = true;
-
-          Main.setSavestage(false);
-          ChangeTitle(FileIOStage);
-
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      } else if (isuserinputnontextfile) {
-        // เปิดไฟล์ Binary ขึ้นมาแจ้งผู้ใช้ว่ามันเปิดไม่ได้
-        Stage alertStage = new Stage();
-        Alert alert = new Alert(AlertType.ERROR);
-        alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
-        alert.setHeaderText(null);
-        alert.setTitle("Error");
-        alert.setContentText("This program can't open this file.");
-        alertStage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Error.png")));
-        alert.show();
-      }
-
-      // เมื่อ user กด open อีกรอบจะเป็น directory ที่อยู่ล่าสุด
-      Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
-
+    boolean isuserinputnontextfile;
+    try {
+      isuserinputnontextfile = IsBinaryFile(UserInputFile);
+    } catch (IOException e1) {
+      // เปิดไฟล์ไม่ได้ ให้จบการเปิดไฟล์เลย
+      e1.printStackTrace();
+      return;
     }
+    StringBuilder texttoshow = new StringBuilder();
+    if (isuserinputnontextfile) {
+      // เปิดไฟล์ Binary ขึ้นมาแจ้งผู้ใช้ว่ามันเปิดไม่ได้
+      Stage alertStage = new Stage();
+      Alert alert = new Alert(AlertType.ERROR);
+      alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+      alert.setHeaderText(null);
+      alert.setTitle("Error");
+      alert.setContentText("This program can't open this file.");
+      alertStage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Error.png")));
+      alert.show();
+      return;
+    }
+    try (
+        FileReader Reader = new FileReader(UserInputFile, StandardCharsets.UTF_8);
+        BufferedReader bf = new BufferedReader(Reader);) {
+
+      String temp = bf.readLine();
+
+      while (temp != null) {
+
+        texttoshow.append(temp);
+        texttoshow.append(System.lineSeparator());
+        temp = bf.readLine();
+
+      }
+
+      TextAreaUI.setText(texttoshow.toString());
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    if (UserInputFile.canWrite()) {
+      // ไฟล์สามารถเปิดอ่านและเขียนได้
+
+      isreadOnly = false;
+
+    } else {
+      // ไฟล์เปิดอ่านได้แต่เขียนไม่ได้
+
+      Alert alert = new Alert(AlertType.INFORMATION);
+      Stage alertStage = new Stage();
+      alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+      alertStage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Information.png")));
+      alert.setHeaderText(null);
+      alert.setTitle("Information");
+      alert.setContentText("This file is read only and it won't be able to saved.");
+      alert.show();
+
+      isreadOnly = true;
+    }
+
+    Main.setSavestage(false);
+    ChangeTitle();
+    // เมื่อ user กด open อีกรอบจะเป็น directory ที่อยู่ล่าสุด
+    Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
+
   }
 
   public short SaveFile() {
     // return 0 เมื่อ save สำเร็จ 1 เมื่อ Fail
-    if (UserInputFile != null && !isreadOnly) {
-      // ถ้าเปิดไฟล์อยู่ก็ให้เซฟทับ
-      if (UserInputFile.exists()) {
-
-        try (FileWriter fileWriter = new FileWriter(UserInputFile, StandardCharsets.UTF_8)) {
-
-          fileWriter.write(TextAreaUI.getText());
-          Main.setSavestage(false);
-          return 0;
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    } else if (!isreadOnly) {
-      // ถ้าไม่ก็ให้เด้งไป save as
+    if (isreadOnly) {
       return SaveAsFile();
     }
-    return 1;
+    if (UserInputFile == null) {
+      // ไม่ได้เปิดไฟล์เด้งไป save as
+      return SaveAsFile();
+    } else {
+      // ถ้าเปิดไฟล์อยู่ก็ให้เซฟทับ
+
+      try (FileWriter fileWriter = new FileWriter(UserInputFile, StandardCharsets.UTF_8)) {
+
+        fileWriter.write(TextAreaUI.getText());
+        Main.setSavestage(false);
+        return 0;
+
+      } catch (Exception e) {
+        return 1;
+      }
+
+    }
+
   }
 
   public short SaveAsFile() {
     // return 0 เมื่อ save สำเร็จ 1 เมื่อ Fail
-    if (!isreadOnly) {
-      File file = Chooser.showSaveDialog(FileIOStage);
 
-      if (file != null) {
-        if (file.exists()) {
-          try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
-            fileWriter.write(TextAreaUI.getText());
-            UserInputFile = new File(file.getPath());
-            Main.setSavestage(false);
-          } catch (Exception e) {
-            e.printStackTrace();
+    File file = Chooser.showSaveDialog(PrimaryStage);
 
-          }
-
-        } else {
-          try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8);) {
-            file.createNewFile();
-
-            fileWriter.write(TextAreaUI.getText());
-
-            UserInputFile = new File(file.getPath());
-            Main.setSavestage(false);
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-        ChangeTitle(FileIOStage);
-        Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
-        return 0;
-      } else {
-        return 1;
+    if (file == null) {
+      return 1;
+    }
+    if (!file.exists()) {
+      try {
+        file.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
       }
     }
-    return 1;
+    try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8);) {
+      fileWriter.write(TextAreaUI.getText());
+      UserInputFile = new File(file.getPath());
+      Main.setSavestage(false);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    ChangeTitle();
+    Chooser.setInitialDirectory(new File(UserInputFile.getParent()));
+    return 0;
+
   }
 
   public boolean IsBinaryFile(File F) throws IOException {
@@ -220,13 +182,19 @@ public class FileIO {
 
   }
 
-  public void ChangeTitle(Stage inputStage) {
+  public void ChangeTitle() {
     if (UserInputFile != null) {
-      inputStage.setTitle(UserInputFile.getName());
+      PrimaryStage.setTitle(UserInputFile.getName() + " - Notepad--");
     }
   }
 
   public boolean IsFileEditable() {
     return isreadOnly;
   }
+
+  public void setboolReadOnly(boolean in) {
+    isreadOnly = in;
+    TextAreaUI.setEditable(!in);
+  }
+
 }

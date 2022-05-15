@@ -1,5 +1,3 @@
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -17,6 +15,10 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+  final static private ButtonType savebtn = new ButtonType("Save");
+  final static private ButtonType donotsavebtn = new ButtonType("Don't Save");
+  final static private ButtonType cancelbtn = new ButtonType("Cancel");
+  final static private Font defultfont = new Font("System", 16);
   private static Stage stage;
   private static FileIO fileIO;
   private static UI ui;
@@ -31,16 +33,16 @@ public class Main extends Application {
     ui = new UI();
     ui.getTextArea().setOnKeyPressed(e -> {
       if (!must_save) {
-        isKeypressed();
+        must_save = true;
       }
     });
 
     fileIO = new FileIO(ui.getTextArea(), primaryStage);
-    textcontroler = new TextControl(primaryStage, ui.getTextArea());
+    textcontroler = new TextControl(ui.getTextArea(), primaryStage);
 
     Scene scene = new Scene(ui, 800, 600);
     primaryStage.setScene(scene);
-    primaryStage.setTitle("Notepad--");
+    primaryStage.setTitle("Untitled - Notepad--");
     try {
       primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Picture/Icon.png")));
     } catch (Exception e1) {
@@ -55,27 +57,28 @@ public class Main extends Application {
 
   }
 
+  public static Alert CreateAlertBeforeExit(String bannertext) {
+    Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle("Notepad--");
+    alert.setHeaderText("You're about to " + bannertext + ".");
+    alert.setContentText("Do you want to save your file before " + bannertext + "?.");
+    alert.getButtonTypes().clear();
+    alert.getButtonTypes().addAll(savebtn, donotsavebtn, cancelbtn);
+
+    Stage window = (Stage) alert.getDialogPane().getScene().getWindow();
+    window.setOnCloseRequest(e -> alert.close());
+    try {
+      window.getIcons().add(new Image(Main.class.getResourceAsStream("Picture/Information.png")));
+    } catch (Exception e1) {
+      e1.printStackTrace();
+    }
+    return alert;
+  }
+
   public static void EventBeforeExit() {
     if (!ui.getTextArea().getText().equals("") && must_save && !fileIO.IsFileEditable()) {
-      ButtonType savebtn = new ButtonType("Save");
-      ButtonType donotsavebtn = new ButtonType("Don't Save");
-      ButtonType cancelbtn = new ButtonType("Cancel");
-      Alert alert = new Alert(AlertType.CONFIRMATION);
-      alert.setTitle("Notepad--");
-      alert.setHeaderText("You're about to exit.");
-      alert.setContentText("Do you want to save your file before exit?");
-      alert.getButtonTypes().clear();
-      alert.getButtonTypes().addAll(savebtn, donotsavebtn, cancelbtn);
-
-      Stage window = (Stage) alert.getDialogPane().getScene().getWindow();
-      window.setOnCloseRequest(e -> alert.close());
-      try {
-        window.getIcons().add(new Image(new FileInputStream("Picture/Information.png")));
-      } catch (FileNotFoundException e1) {
-        e1.printStackTrace();
-      }
-
-      Optional<ButtonType> userinput = alert.showAndWait();
+      Alert tempAlert = CreateAlertBeforeExit("exit");
+      Optional<ButtonType> userinput = tempAlert.showAndWait();
       userinput.ifPresent(e -> {
         if (e.equals(donotsavebtn)) {
           System.exit(0);
@@ -84,7 +87,7 @@ public class Main extends Application {
             System.exit(0);
           }
         } else if (e.equals(cancelbtn)) {
-          alert.close();
+          tempAlert.close();
         }
       });
 
@@ -99,6 +102,7 @@ public class Main extends Application {
       final KeyCombination inew = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
       final KeyCombination font = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
       final KeyCombination find = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
+      final KeyCombination open = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
 
       public void handle(KeyEvent ke) {
         if (save.match(ke)) {
@@ -113,6 +117,9 @@ public class Main extends Application {
         } else if (find.match(ke)) {
           textcontroler.TextFinderEvent();
           ke.consume();
+        } else if (open.match(ke)) {
+          fileIO.OpenFile();
+          ke.consume();
         }
       }
     });
@@ -120,68 +127,39 @@ public class Main extends Application {
 
   public static void onNew() {
     if (must_save) {
-      ButtonType savebtn = new ButtonType("Save");
-      ButtonType donotsavebtn = new ButtonType("Don't Save");
-      ButtonType cancelbtn = new ButtonType("Cancel");
-      Alert alert = new Alert(AlertType.CONFIRMATION);
-      alert.setTitle("Notepad--");
-      alert.setHeaderText("You're about to create a new file.");
-      alert.setContentText("Do you want to save your file before create a new file?");
-      alert.getButtonTypes().clear();
-      alert.getButtonTypes().addAll(savebtn, donotsavebtn, cancelbtn);
-
-      Stage window = (Stage) alert.getDialogPane().getScene().getWindow();
-      window.setOnCloseRequest(e -> alert.close());
-      try {
-        window.getIcons().add(new Image(Main.class.getResourceAsStream("Picture/Information.png")));
-      } catch (Exception e1) {
-        e1.printStackTrace();
-      }
-      Optional<ButtonType> userinput = alert.showAndWait();
+      Alert tempAlert = CreateAlertBeforeExit("create a new file");
+      Optional<ButtonType> userinput = tempAlert.showAndWait();
       userinput.ifPresent(e -> {
         if (e.equals(donotsavebtn)) {
-          stage.setTitle("Notepad--");
+          stage.setTitle("Untitled - Notepad--");
           ui.getTextArea().clear();
-          ui.getTextArea().setFont(Font.font("System", 16));
+          ui.getTextArea().setFont(defultfont);
+          fileIO.setboolReadOnly(false);
         } else if (e.equals(savebtn)) {
           if (fileIO.SaveFile() == 0) {
-            stage.setTitle("Notepad--");
+            stage.setTitle("Notepad--  Untitled");
             ui.getTextArea().clear();
-            ui.getTextArea().setFont(Font.font("System", 16));
+            ui.getTextArea().setFont(defultfont);
+            fileIO.setboolReadOnly(false);
           }
         } else if (e.equals(cancelbtn)) {
-          alert.close();
+          tempAlert.close();
         }
       });
 
     } else {
-      stage.setTitle("Notepad--");
+      stage.setTitle("Untitled - Notepad--");
       ui.getTextArea().clear();
-      ui.getTextArea().setFont(Font.font("System", 16));
+      ui.getTextArea().setFont(defultfont);
+      fileIO.setboolReadOnly(false);
     }
 
   }
 
   public static void onOpen() {
     if (must_save) {
-      ButtonType savebtn = new ButtonType("Save");
-      ButtonType donotsavebtn = new ButtonType("Don't Save");
-      ButtonType cancelbtn = new ButtonType("Cancel");
-      Alert alert = new Alert(AlertType.CONFIRMATION);
-      alert.setTitle("Notepad--");
-      alert.setHeaderText("You're about to open a new file.");
-      alert.setContentText("Do you want to save your file before open a new file?");
-      alert.getButtonTypes().clear();
-      alert.getButtonTypes().addAll(savebtn, donotsavebtn, cancelbtn);
-
-      Stage window = (Stage) alert.getDialogPane().getScene().getWindow();
-      window.setOnCloseRequest(e -> alert.close());
-      try {
-        window.getIcons().add(new Image(Main.class.getResourceAsStream("Picture/Information.png")));
-      } catch (Exception e1) {
-        e1.printStackTrace();
-      }
-      Optional<ButtonType> userinput = alert.showAndWait();
+      Alert tempAlert = CreateAlertBeforeExit("open a new file");
+      Optional<ButtonType> userinput = tempAlert.showAndWait();
       userinput.ifPresent(e -> {
         if (e.equals(donotsavebtn)) {
           fileIO.OpenFile();
@@ -190,7 +168,7 @@ public class Main extends Application {
             fileIO.OpenFile();
           }
         } else if (e.equals(cancelbtn)) {
-          alert.close();
+          tempAlert.close();
         }
       });
 
@@ -205,7 +183,6 @@ public class Main extends Application {
 
   public static void onSaveAs() {
     fileIO.SaveAsFile();
-    fileIO.ChangeTitle(stage);
   }
 
   public static void onExit() {
@@ -281,13 +258,7 @@ public class Main extends Application {
   }
 
   public static void onFormat() {
-
     textcontroler.TextControlEvent();
-
-  }
-
-  public void isKeypressed() {
-    must_save = true;
   }
 
   public static void setSavestage(boolean in) {
